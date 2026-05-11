@@ -1,0 +1,263 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This XML schema is generated with tpegUMLconverter 3.0, at 2016-09-
+05 21:47, on basis of release 1.1 -->
+<xs:schema xmlns="http://www.tisa.org/TPEG/TFP_1_1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tsf="http://www.tisa.org/TPEG/SFW_1_1" xmlns:tdt="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" xmlns:mmc="http://www.tisa.org/TPEG/MMC_1_1" xmlns:lrc="http://www.tisa.org/TPEG/LRC_3_0" targetNamespace="http://www.tisa.org/TPEG/TFP_1_1" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:import namespace="http://www.tisa.org/TPEG/SFW_1_1" schemaLocation="SFW_1_1.xsd"/>
+	<xs:import namespace="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" schemaLocation="TDT_2_1.xsd"/>
+	<xs:import namespace="http://www.tisa.org/TPEG/MMC_1_1" schemaLocation="MMC_1_1.xsd"/>
+	<xs:import namespace="http://www.tisa.org/TPEG/LRC_3_0" schemaLocation="LRC_3_0.xsd"/>
+	<xs:element name="TFPMessage" type="TFPMessage"><xs:annotation><xs:documentation>A 'TFPMessage' component is the top container of a TFP message. It contains all information about a particular part of the network, for example the traffic state for a road segment. 
+ Annotation: just informative here; text for specification to be done in Word</xs:documentation></xs:annotation></xs:element>
+	<xs:complexType name="TFPMessage">
+		<xs:annotation><xs:documentation>A 'TFPMessage' component is the top container of a TFP message. It contains all information about a particular part of the network, for example the traffic state for a road segment. 
+ Annotation: just informative here; text for specification to be done in Word</xs:documentation></xs:annotation><xs:complexContent>
+			<xs:extension base="tsf:ApplicationRootMessageML">
+				<xs:sequence>
+					<xs:element name="mmt" type="MMCSwitch"/>
+					<xs:element name="method" type="TFPMethod" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="loc" type="lrc:LocationReferencingContainer" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="TFPMethod">
+		<xs:annotation><xs:documentation>Traffic conditions are modelled as traffic flow objects. TFP provides three different methods to define such an object, for details see descriptions of components 'FlowPolygonObject', 'FlowStatus' and 'FlowMatrix'. 'TFPMethod' is the generalization of these 3 methods.  
+ Annotation: just informative here; text for specification to be done in Word</xs:documentation></xs:annotation><xs:sequence>
+			<xs:choice minOccurs="1" maxOccurs="1">
+				<xs:element name="optionFlowPolygonObject" type="FlowPolygonObject" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionFlowStatus" type="FlowStatus" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionFlowMatrix" type="FlowMatrix" minOccurs="1" maxOccurs="1"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FlowPolygonObject">
+		<xs:annotation><xs:documentation>The Flow Polygon method describes the traffic situation within the network by a number of 'FlowPolygonObjects'. Each of these objects defines a spatial and temporal area with critical or congested conditions, whereas the rest of the considered road network is assumed to be in a free-flow state.  
+ Annotation: just informative here; text for specification to be done in Word</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="startTime" type="tdt:DateTime"><xs:annotation><xs:documentation>The start of the time period for which the provided content is valid.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="duration" type="tdt:IntUnLoMB" minOccurs="0"><xs:annotation><xs:documentation>The duration [min] of the time period for which the provided content is valid. The period starts at 'startTime' and ends at 'startTime'+'duration'. This attribute shall be used by the 'PolygonFlowObject' component and may be used if required otherwise.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="spatialResolution" type="tfp004_SpatialResolution"><xs:annotation><xs:documentation>Resolution of the spatial offset used in this structure in steps of 10/50/100/500 metres or TMC-locations. This spatial resolution value shall be used for all spatial offsets in the embedded 'FlowPolygon' components if not overridden there by the corresponding attribute 'spatialResolutionPolygon'. Relative spatial offsets (table entries 5 and 6) shall not be used. The 'start-of-location' spatial offset (table entry 7) shall neither be used.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="polygons" type="FlowPolygon" maxOccurs="unbounded"><xs:annotation><xs:documentation>Flow Polygon data.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FlowPolygon">
+		<xs:annotation><xs:documentation>A 'FlowPolygon' includes a spatial/temporal area with a consistent traffic flow status.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="polygonIndex" type="tdt:IntUnLoMB"><xs:annotation><xs:documentation>Unique index within related 'FlowPolygonObject'. Used for ordering the FlowPolygons within the 'FlowPolygonObject'</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="status" type="StatusParameters"><xs:annotation><xs:documentation>Attributes describing the traffic flow status within the polygon</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="polygonPoints" type="PolygonPoint" maxOccurs="unbounded"><xs:annotation><xs:documentation>Vector with polygon points</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="spatialResolutionPolygon" type="tfp004_SpatialResolution" minOccurs="0"><xs:annotation><xs:documentation>Resolution of the spatial offset used for this polygon, in steps of 10/50/100/500 metres or TMC-locations. The value of this attribute - if present - overrides for this FlowPolygon the attribute value 'spatialResolution' of the related 'FlowPolygonObject' component. Relative spatial offsets (table entries 5 and 6) shall not be used.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="restriction" type="Restrictions" minOccurs="0"><xs:annotation><xs:documentation>Information on restrictions related to the reported traffic flow</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="statistics" type="StatisticalParameters" minOccurs="0"><xs:annotation><xs:documentation>Statistical information related to the reported flow status</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="cause" type="tfp006_CauseCode" minOccurs="0"><xs:annotation><xs:documentation>A simple cause for the reported traffic flow status may be added by this attribute; this parameter shall be omitted if a detailed cause is available by an external message (see attribute 'linked cause')</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="detailedCause" type="LinkedCause" minOccurs="0"><xs:annotation><xs:documentation>A detailed cause may be reported by a linked message (e.g. a TEC-message).</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FlowStatus">
+		<xs:annotation><xs:documentation>The 'FlowStatus' component includes the information about the traffic flow status at a dedicated location defined by the LRC and for a distinct time interval.   
+ A message may contain more than one 'FlowStatus' component in order to provide information for several vehicle classes or for several time intervals.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="startTime" type="tdt:DateTime"/>
+			<xs:element name="duration" type="tdt:IntUnLoMB" minOccurs="0"/>
+			<xs:element name="status" type="StatusParameters"><xs:annotation><xs:documentation>Attributes describing the traffic flow status at the related location</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="restriction" type="Restrictions" minOccurs="0"><xs:annotation><xs:documentation>Information on restrictions related to the reported traffic flow</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="statistics" type="StatisticalParameters" minOccurs="0"><xs:annotation><xs:documentation>Statistical information related to the reported flow status</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="cause" type="tfp006_CauseCode" minOccurs="0"><xs:annotation><xs:documentation>A simple cause for the reported traffic flow status may be added by this attribute; this parameter shall be omitted if a detailed cause is available by an external message (see attribute 'linked cause')</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="detailedCause" type="LinkedCause" minOccurs="0"><xs:annotation><xs:documentation>A detailed cause may be reported by a linked message (e.g. a TEC-message)</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FlowMatrix">
+		<xs:annotation><xs:documentation>The Flow Matrix method describes the traffic situation of the considered road network using temporal and spatial matrices of traffic flow states, such that the overall considered network is covered by the transmitted matrix objects (see figure below):
+ Annotation: text to be done in Word Doc</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="startTime" type="tdt:DateTime"/>
+			<xs:element name="duration" type="tdt:IntUnLoMB" minOccurs="0"/>
+			<xs:element name="spatialResolution" type="tfp004_SpatialResolution"><xs:annotation><xs:documentation>Resolution of the spatial offset used in this structure in steps of 10/50/100/500 metres or TMC-locations. This spatial resolution value shall be used for all spatial offsets in the embedded data objects if not overridden there by the corresponding attributes (i.e. 'spatialResolutionVector' in component 'FlowVector' and 'spatialResolutionSection' in datastructure 'FlowVectorSection'). Relative spatial offsets (table entries 5 and 6) shall not be used for this attribute. The 'start-of-location' spatial offset (table entry 7) shall neither be used for this attribute.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="vectors" type="FlowVector" maxOccurs="unbounded"><xs:annotation><xs:documentation>Flow Vector data</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FlowVector">
+		<xs:annotation><xs:documentation>A 'FlowVector' includes traffic flow status information for the road stretch covered by the surrounding Flow Matrix, but only for a dedicated time interval. The 'FlowVector' consists of a number of 'FlowVectorSections' which shall be ordered in the 'vectorSections' attribute in downstream direction i.e. in descending order of the related 'spatialOffset' attributes.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="timeOffset" type="tdt:IntUnLoMB"><xs:annotation><xs:documentation>Temporal offset [min] to the 'startTime' of the surrounding 'FlowMatrix' object, defining the end of the related time interval. In case of a current status the begin of the time interval is the 'startTime' of the related 'FlowMatrix' object. In case of a prognosis the begin of the time interval is the end of the previous interval. May be zero for the FlowVector of the current status if there are no further flow vectors with forecast data (0 equals to 'end undefined').</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="vectorSections" type="FlowVectorSection" maxOccurs="unbounded"><xs:annotation><xs:documentation>Flow section data; the 'FlowVectorSections' objects in this attribute shall be ordered in driving direction, i.e. the section with the highest spatial offset first (see also 7.2).</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="spatialResolutionVector" type="tfp004_SpatialResolution" minOccurs="0"><xs:annotation><xs:documentation>Resolution of the spatial offset used for this vector, in steps of 10/50/100/500 metres or TMC-locations. The value of this attribute - if present- overrides for this Flow Vector the attribute 'spatialResolution' of the corresponding 'FlowMatrix' component. Relative spatial offsets (table entries 5 and 6) shall not be used for this attribute. The 'start-of-location' spatial offset (table entry 7) shall neither be used for this attribute.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SectionExtensionComponent">
+<xs:annotation><xs:documentation>This component is not used yet. It enables future backward-compatible extensions to the containing 'FlowVectorSection' data structure.</xs:documentation></xs:annotation></xs:complexType>
+	<xs:complexType name="StatusExtensionComponent">
+<xs:annotation><xs:documentation>This component is not used yet. It enables future backward-compatible extensions to the containing 'StatusParameters' data structure.</xs:documentation></xs:annotation></xs:complexType>
+	<xs:complexType name="RestrictionExtensionComponent">
+<xs:annotation><xs:documentation>This component is not used yet. It enables future backward-compatible extensions to the containing 'Restrictions' data structure.</xs:documentation></xs:annotation></xs:complexType>
+	<xs:complexType name="StatisticsExtensionComponent">
+<xs:annotation><xs:documentation>This component is not used yet. It enables future backward-compatible extensions to the containing 'StatisticalParameters' datastructure.</xs:documentation></xs:annotation></xs:complexType>
+	<xs:complexType name="MMCSwitch">
+		<xs:annotation><xs:documentation>The MMCSwitch component is an abstract component, allowing the flexible use of monolithic or multi-part message management.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:choice minOccurs="1" maxOccurs="1">
+				<xs:element name="optionMessageManagementContainerLink" type="mmc:MessageManagementContainer" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionMMCMasterLink" type="mmc:MMCMasterMessage" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionMMCPartLink" type="mmc:MMCMessagePart" minOccurs="1" maxOccurs="1"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FlowVectorSection">
+		<xs:annotation><xs:documentation>A 'FlowVectorSection' includes traffic flow status information for a dedicated section of a road stretch.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="spatialOffset" type="tdt:IntUnLoMB"><xs:annotation><xs:documentation>Start of the section as spatial offset in upstream direction (i.e. opposite to the driving direction) to the end of the road stretch defined by the Location Reference of the message. The end of a section is defined by the start of the following section in downstream (driving) direction. If the section is of type 'entry' (see attribute 'sectionType') the offset defines the point where the entry joins the road. If the section is of type 'exit' the offset defines the point where the exit separates from the road. 
+ The units used for the offset is signalled by the &amp;lsquo;spatialResolution&amp;lsquo; attribute of the related objects &amp;lsquo;FlowMatrx&amp;rsquo;, &amp;lsquo;FlowVector&amp;rsquo; or &amp;lsquo;FlowVectorSection&amp;rsquo; and may be in TMC locations or metric units, or a default value 1 in case of a 'start-of-location' spatial resolution. 
+ The determination of the metric spatial offset is defined by the following equation: 
+         spatial offset (m) = spatialOffset * spatialResolution (m)</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="status" type="StatusParameters"><xs:annotation><xs:documentation>Attributes describing the traffic status at this section</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="spatialResolutionSection" type="tfp004_SpatialResolution" minOccurs="0"><xs:annotation><xs:documentation>Resolution of the spatial offset used for this section, in steps of 10/50/100/500 metres, or TMC-locations, or relative offsets in steps of 10/100 metres, or a fixed value 1 for the spatialOffset attribute in case of a 'start-of-location' spatialResolutionSection value. The value of this attribute - if present- overrides for this 'FlowVectorSection' the attributes 'spatialResolution' of the related 'FlowMatrix' component and/or 'spatialResolutionVector' of the related 'FlowVector' component. 
+ To avoid aggregated inaccuracies, relative offsets should be used only exceptionally, e.g. for precise delimiters of particular sections within a road stretch with TMC location referencing.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="sectionType" type="tfp007_SectionType" minOccurs="0"><xs:annotation><xs:documentation>Type of section; shall be used if and only if no normal road section (entry or exit)</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="restriction" type="Restrictions" minOccurs="0"><xs:annotation><xs:documentation>Information on restrictions related to the reported information</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="statistics" type="StatisticalParameters" minOccurs="0"><xs:annotation><xs:documentation>Statistical information related to the reported flow status</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="cause" type="tfp006_CauseCode" minOccurs="0"><xs:annotation><xs:documentation>A simple cause for the reported traffic flow status may be added by this attribute; this parameter shall be omitted if a detailed cause is available by an external message (see attribute 'linked cause')</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="detailedCause" type="LinkedCause" minOccurs="0"><xs:annotation><xs:documentation>A detailed cause may be reported by a linked message (e.g. a TEC-message)</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="extensions" type="SectionExtensionComponent" minOccurs="0"><xs:annotation><xs:documentation>The extensions component is not used yet but may be used in future TFP versions to add further attributes to this data structure without losing backward-compatibility</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PolygonPoint">
+		<xs:annotation><xs:documentation>A 'PolygonPoint' defines a spatial/temporal point within a 'FlowPolygon'.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="spatialOffset" type="tdt:IntUnLoMB"><xs:annotation><xs:documentation>Position of the 'PolygonPoint' as (absolute) spatial offset to the end of the road stretch defined by the Location Reference of the message in upstream direction. 
+ The units used for the offset is signalled by the 'spatialResolution' attribute of the related objects 'FlowPolygon' or 'FlowPolygonObject'  and may be in TMC locations or metric units. 
+ The determination of the metric spatial offset is defined by the following equation: 
+         spatial offset (m) = spatialOffset * spatialResolution (m)
+ Relative spatial offsets (table entries 5 and 6) shall not be used for this attribute.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="timeOffset" type="tdt:IntUnLoMB"><xs:annotation><xs:documentation>Temporal offset [min] to the 'startTime' of the surrounding 'FlowPolygonObject'.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LinkedCause">
+		<xs:annotation><xs:documentation>This datastructure may be used if required to link to a TPEG message with more details about the cause for this traffic status. 
+ A link to another message is uniquely specified by the combination of ServiceID, ContentID,  ApplicationID and messageID.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="messageID" type="tdt:IntUnLoMB"><xs:annotation><xs:documentation>The related message ID</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="COID" type="tdt:IntUnTi"><xs:annotation><xs:documentation>Content ID of the TPEG service component related to the linked message</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="SID" type="tdt:ServiceIdentifier" minOccurs="0"><xs:annotation><xs:documentation>The TPEG service ID related to the service of the linked message; this attribute may be omitted if the linked message is in the same TPEG service like this TFP message.Note that the originator service SID may differ from the carrier service SID (see ISO TS 21219-9).</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="AID" type="tdt:IntUnLi" minOccurs="0"><xs:annotation><xs:documentation>Application ID of the TPEG service component related to the linked message; the default value is = 5 (TEC) so this attribute may be omitted if the linked message is of this application type</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="StatusParameters">
+		<xs:annotation><xs:documentation>This datastructure contains the parameters defining the traffic flow status on the corresponding rod section. The following requirements shall be fulfilled for the StatusParameters:
+  At least one of the attributes 'LOS', 'averageSpeed' and 'delay' shall be delivered
+  The 'delay' attribute should be used if the speed on the related road section is near to zero, to avoid inaccurate or infinite travel time calculations
+ In case of a blocked road this shall be indicated by a 'LOS' attribute with value 'no traffic flow' (with or without tendency, tfp003 values 006, 014, 030, 046)</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="LOS" type="tfp003_LevelOfService" minOccurs="0"><xs:annotation><xs:documentation>The 'LOS' (Level-of-Service) attribute indicates the current traffic quality and (optionally) its tendency. 
+ The LOS level is dependent on the road category; e.g. a average speed of 40km/h may be 'Free Traffic' on a city road and may be 'Queuing Traffic' on a highway.
+ The tendency shall be the predicted LOS level in the next time period, which starts at startTime + duration of this the current period</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="averageSpeed" type="tdt:IntUnTi" minOccurs="0"><xs:annotation><xs:documentation>The achievable average speed in km/h. This value may differ from the measured average speed on the related road section as it should exclude vehicle classes with inherent speed limitations (e.g. lorries).</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="freeFlowTravelTime" type="tdt:IntUnLoMB" minOccurs="0"><xs:annotation><xs:documentation>The time in seconds it takes to traverse the affected road segment under free flow traffic conditions.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="delay" type="tdt:Duration" minOccurs="0"><xs:annotation><xs:documentation>Delay on the road segment in seconds; as this value shall be used only if the average speed is near to 0 m/sec this value equals the overall travel time, i.e. the time it takes to traverse the road segment.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="extensions" type="StatusExtensionComponent" minOccurs="0"><xs:annotation><xs:documentation>The extensions component is not used yet but may be used in future TFP versions to add further attributes to this data structure without losing backward-compatibility.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Restrictions">
+		<xs:annotation><xs:documentation>The traffic state reported by the element containing the 'Restrictions' is restricted to vehicle types, type of sections, lanes etc. as defined by this 'Restrictions' datastructure.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="vehicleClassAssignment" type="tfp001_VehicleClass" minOccurs="0"><xs:annotation><xs:documentation>The purpose of the vehicle class attribute is to be able to supply traffic flow and prediction values for particular types of vehicles rather than describe a particular vehicle itself. The attribute indicates that the status conveyed in the current TFP object only concerns a specific type of vehicle.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="vehicleCredentials" type="tfp002_VehicleCredentials" minOccurs="0"><xs:annotation><xs:documentation>Where special restrictions or access conditions apply for a particular type of vehicle then these credentials can be indicated by this element.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="lanes" type="tfp005_LaneRestriction" minOccurs="0"><xs:annotation><xs:documentation>Assignment to lanes for which the reported traffic status is valid</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="angle" type="tdt:IntUnTi" minOccurs="0"><xs:annotation><xs:documentation>Angle of an entry/exit to the road stretch in 360/255 degree steps clockwise to the direction of the road stretch at the entry/exit point. Only required to differentiate between several entries/exits if more than one exit/entry is going in/out at the same point on the road, so no exact angle values are required.
+ If an entry/exit can't be referenced unambiguously in this way, an extra TFP message with a dedicated location reference (e.g. DLR1 reference) for this entry/exit should be used.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="length" type="tdt:IntUnLoMB" minOccurs="0"><xs:annotation><xs:documentation>Length affected in 10 meter steps. This parameter may be used for sections of type 'entry' or 'exit' to restrict the traffic flow to parts of the related section. In case of an entry, the length determines the start of the section, in case of an exit it determines the end of the section. 
+ In case of a section on the road stretch this parameter shall not be used cause the section length is determined by the 'spatialOffset' attribute of the following section or the end of the Location Reference.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="extensions" type="RestrictionExtensionComponent" minOccurs="0"><xs:annotation><xs:documentation>The extensions component is not used yet but may be used in future TFP versions to add further attributes to this data structure without losing backward-compatibility.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="StatisticalParameters">
+		<xs:annotation><xs:documentation>This datastructure contains statistical parameters and quality indicators of the corresponding status flow parameters.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="congestionProbability" type="tdt:IntUnTi" minOccurs="0"><xs:annotation><xs:documentation>The risk [%] that a congestion (LOS level 'stationary traffic' or 'blocked') will occur at this road section. This value shall be in range 0..100.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="T90relative" type="tdt:IntUnLoMB" minOccurs="0"><xs:annotation><xs:documentation>Used to determine the risk that the travel time may exceed the expected travel time considerably.The value is delivered in 1/10 percentages. A low value is equal to a high probability that the transmitted 'averageSpeed' is reliable.
+  
+ In detail, the attribute 'T90relative' is used to determine a Travel Time value T90 where 90% of the measured travel times on the affected road section are below T90. In other words, a driver can rely on with 90% probability that his travel time will not exceed T90. The determination of T90 shall be done by the following approach: 
+  
+ The average travel time Tav at the affected road section is determined by:  Tav = section-length [m] / averageSpeed [m/sec] 
+ The T90 value is computed by:  T90 = Tav * T90relative</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="FlowQuality" type="tfp008_FlowDataQuality" minOccurs="0"><xs:annotation><xs:documentation>Expresses the accuracy of the data source(s) used for the determination of the traffic status, e.g. accurate measurement data will have a higher quality level than estimations made from video surveys.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="prediction" type="tdt:IntUnTi" minOccurs="0"><xs:annotation><xs:documentation>This parameter may be used to link to a LOS prediction pattern. The service provider is responsible for exact definitions of these patterns.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="extensions" type="StatisticsExtensionComponent" minOccurs="0"><xs:annotation><xs:documentation>The extensions component is not used yet but may be used in future TFP versions to add further attributes to this data structure without losing backward-compatibility.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tfp001_VehicleClass">
+		<xs:attribute name="table" type="xs:string" fixed="tfp001_VehicleClass" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="16"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tfp002_VehicleCredentials">
+		<xs:attribute name="table" type="xs:string" fixed="tfp002_VehicleCredentials" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="3"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tfp003_LevelOfService">
+		<xs:attribute name="table" type="xs:string" fixed="tfp003_LevelOfService" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="46"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tfp004_SpatialResolution">
+		<xs:attribute name="table" type="xs:string" fixed="tfp004_SpatialResolution" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="7"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tfp005_LaneRestriction">
+		<xs:attribute name="table" type="xs:string" fixed="tfp005_LaneRestriction" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="39"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tfp006_CauseCode">
+		<xs:attribute name="table" type="xs:string" fixed="tfp006_CauseCode" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="68"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tfp007_SectionType">
+		<xs:attribute name="table" type="xs:string" fixed="tfp007_SectionType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="2"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tfp008_FlowDataQuality">
+		<xs:attribute name="table" type="xs:string" fixed="tfp008_FlowDataQuality" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>

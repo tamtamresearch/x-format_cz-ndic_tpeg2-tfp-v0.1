@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema xmlns="http://www.tisa.org/TPEG/MMC_1_1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tdt="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" targetNamespace="http://www.tisa.org/TPEG/MMC_1_1" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:import namespace="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" schemaLocation="TDT_2_1.xsd"/>
+	<xs:complexType name="MMCTemplate" abstract="true">
+		<xs:sequence>
+			<xs:element name="messageID" type="tdt:IntUnLoMB"><xs:annotation><xs:documentation>Unique identifier for a message relating to a particular event transmitted in a particular TPEG service component.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="versionID" type="tdt:IntUnTi"><xs:annotation><xs:documentation>Serial number that distinguishes successive versions of one message in case of message updates. The versionID numbers shall be used incrementally, enabling to track the update progress of a message from first transmission, versionID = 0, through updates to cancellation. Wrap around is applied, i.e. the versionID following 255 shall be 0. 
+ The versionID shall change every time the content of a message changes. Changes of the message management container only shall not cause a change of the versionID. If for example only the message expiry time in the message management container is changed, the versionID remains unchanged. 
+ To avoid ambiguous situations when a wrap around occurs, the following two rules apply: 
+ - Not more than one version of a message shall be on air in a service component at the same time within a service with identical service ID.
+ - The message expiry time has to be set in an appropriate way.
+ If a message with the same messageID, but a lower version number is received, a wrap around has occurred if the expiry time of the last received message is later.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="messageExpiryTime" type="tdt:DateTime"><xs:annotation><xs:documentation>If the current time is later than the messageExpiryTime, the message shall be considered as invalid and the TPEG Client device shall therefore not be present it to the user any more by. When the validity of the message contents for the user is to be maintained, the TPEG Server shall send  the message, or a newer version thereof before the message expires. Expiry times are transmission specific and may differ dependent on the particular transmission conditions.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="cancelFlag" type="tdt:Boolean"><xs:annotation><xs:documentation>This flag shall be set (true), if a message, identified by its messageID, is no longer valid and has to be removed in the client device. The message body of messages with a set cancelFlag shall be empty.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="messageGenerationTime" type="tdt:DateTime" minOccurs="0"><xs:annotation><xs:documentation>Date and time when the message was inserted into the delivery channel. Message generation time provides an system diagnostic tool to determine delays in the transmission chain. End-user devices should ignore this value.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="priority" type="tdt:typ007_Priority" minOccurs="0"><xs:annotation><xs:documentation>Messages with higher priority should be decoded or processed prior to other messages if resources in the client device are limited. This is a relative indicator only; it is not directly related to the priority of the content. For example a new message might have a higher priority than another one with similar content that has been on air for some time.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MessageManagementContainer">
+		<xs:annotation><xs:documentation>The MessageManagementContainer component inherits all attributes from the abstract component MMCTemplate. No more attributes are added.</xs:documentation></xs:annotation><xs:complexContent>
+			<xs:extension base="MMCTemplate">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="MMCMasterMessage">
+		<xs:annotation><xs:documentation>Where parts of messages are updated dynamically, i.e. where parts are replaced or omitted without retransmission of complete messages, one MMCMasterMessage and a number of partial messages have to be transmitted. The TPEG Server has to take care for sending the MMCMasterMessage within a reasonable timeframe, i.e. at least within the message expiry time of the message parts, as no decoding of the message is possible until the MMCMasterMessage has been received. 
+ There shall only be one MMCMasterMessage per messageID in the transmission channel at any time. 
+ The master message connects all MMCMessageParts through the multiPartMessageDirectory listing. 
+ For each entry in the 'multiPartMessageDirectory', one message with a MMCMessagePart container shall be added to the transmission cycle. This MMCMessagePart shall contain the identical messageID like the MMCMasterMessage.</xs:documentation></xs:annotation><xs:complexContent>
+			<xs:extension base="MMCTemplate">
+				<xs:sequence>
+					<xs:element name="multiPartMessageDirectory" type="MultiPartMessageDirectory" maxOccurs="255"><xs:annotation><xs:documentation>List of MultiPartMessageDirectory entries, referencing all partial messages to be expected and their type indicating whether they are optional or mandatory. There shall be one entry per partial messages in the multiPartMessageDirectory.</xs:documentation></xs:annotation></xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="MMCMessagePart">
+		<xs:annotation><xs:documentation>A message using the MMCMessagePart component is a partial message, which is transmitted separately from the MMCMasterMessage. This message shall not be interpreted before the master message and all mandatory partial messages defined therein have been received. 
+ The messageID has to be identical to the messageID of the master message. All other attributes are completely independent.</xs:documentation></xs:annotation><xs:complexContent>
+			<xs:extension base="MMCTemplate">
+				<xs:sequence>
+					<xs:element name="partID" type="tdt:IntUnTi"><xs:annotation><xs:documentation>Unique ID of the partial message among all messages with the same messageID.</xs:documentation></xs:annotation></xs:element>
+					<xs:element name="updateMode" type="mmc002_UpdateMode"><xs:annotation><xs:documentation>Defines how the content of the partial message has to be merged with the overall message content.</xs:documentation></xs:annotation></xs:element>
+					<xs:element name="masterMessageVersions" type="tdt:IntUnTi" minOccurs="0" maxOccurs="255"><xs:annotation><xs:documentation>This attribute may be used, if a partial message is only valid for special versions of the master message. If omitted the partial message shall be applied to any, not expired, version of the master message.</xs:documentation></xs:annotation></xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="MultiPartMessageDirectory">
+		<xs:annotation><xs:documentation>Datastructure containing a partID and a partType attribute. This pair is used to reference a partial message and specify if the referenced message needs to be received before the message may be presented to the user.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="partID" type="tdt:IntUnTi"><xs:annotation><xs:documentation>Unique ID of the partial message.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="partType" type="mmc001_PartType"><xs:annotation><xs:documentation>This attribute partType defines the role of this partial message within the combined message.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="mmc001_PartType">
+		<xs:attribute name="table" type="xs:string" fixed="mmc001_PartType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="1"/>
+					<xs:maxInclusive value="2"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="mmc002_UpdateMode">
+		<xs:attribute name="table" type="xs:string" fixed="mmc002_UpdateMode" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="1"/>
+					<xs:maxInclusive value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>

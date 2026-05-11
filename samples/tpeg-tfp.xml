@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+  Sample: TPEG2 TFP flow-status update (partialRepository).
+
+  This file carries only Part 2 (flow data) for each measurement site.
+  The matching location references (Part 1) are stored separately in
+  tpeg-tfp-pls.xml.  Receivers correlate the two using mmc:messageID.
+
+  Two sample messages are included:
+    - 78865458  free-flow traffic (LOS 1) with per-vehicle-class breakdown
+    - 78865460  congested traffic (LOS 4)
+-->
+<sfw:TPEGDocument
+  xmlns:mmc="http://www.tisa.org/TPEG/MMC_1_1"
+  xmlns:sfw="http://www.tisa.org/TPEG/SFW_1_1"
+  xmlns:sni="http://www.tisa.org/TPEG/SNI_3_3"
+  xmlns:tdt="http://www.tisa.org/TPEG/TPEGDataTypes_2_1"
+  xmlns:tfp="http://www.tisa.org/TPEG/TFP_1_1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  sfw:version="1"
+  sfw:docType="partialRepository"
+  sfw:timeStamp="2026-05-11T09:14:19+02:00">
+  <sfw:TransportFrame>
+    <sfw:ServiceData>
+      <sfw:SID>
+        <tdt:SID_A>0</tdt:SID_A>
+        <tdt:SID_B>1</tdt:SID_B>
+        <tdt:SID_C>1</tdt:SID_C>
+      </sfw:SID>
+      <sfw:ServiceComponentMultiplex>
+
+        <!-- SCID 0: SNI service description -->
+        <sfw:ServiceComponent sfw:applicationId="0" sfw:contentId="0">
+          <sfw:ServiceComponentFrameContent xsi:type="sfw:ServCompFrameProtected">
+            <sfw:SCID>0</sfw:SCID>
+            <sfw:ApplicationRootMessage>
+              <sfw:ApplicationRootMessageML xsi:type="sni:SNI1Template">
+                <sni:optionCurrentServiceInformation>
+                  <sni:serviceName>TPEG_CZ_FCD</sni:serviceName>
+                  <sni:serviceDescription>Plynulost dopravního proudu pro celou ČR</sni:serviceDescription>
+                </sni:optionCurrentServiceInformation>
+              </sfw:ApplicationRootMessageML>
+            </sfw:ApplicationRootMessage>
+            <sfw:ApplicationRootMessage>
+              <sfw:ApplicationRootMessageML xsi:type="sni:SNI1Template">
+                <sni:optionGST1_FastTuningTable>
+                  <sni:tableVersion>1</sni:tableVersion>
+                  <sni:characterEncoding sni:table="sni002_CharacterEncoding" sni:code="125"/>
+                  <sni:tableEntry>
+                    <sni:SCID>1</sni:SCID>
+                    <sni:contentID>1</sni:contentID>
+                    <sni:applicationID>7</sni:applicationID>
+                    <sni:safetyFlagIsSet>false</sni:safetyFlagIsSet>
+                  </sni:tableEntry>
+                </sni:optionGST1_FastTuningTable>
+              </sfw:ApplicationRootMessageML>
+            </sfw:ApplicationRootMessage>
+          </sfw:ServiceComponentFrameContent>
+        </sfw:ServiceComponent>
+
+        <!-- SCID 1: TFP flow-status messages (Part 2 of each multi-part message) -->
+        <sfw:ServiceComponent sfw:applicationId="7" sfw:contentId="1">
+          <sfw:ServiceComponentFrameContent xsi:type="sfw:ServCompFrameProtected">
+            <sfw:SCID>1</sfw:SCID>
+
+            <!-- Message 78865458 Part 2: free-flow (LOS 1), all-vehicle + passenger-car breakdown -->
+            <sfw:ApplicationRootMessage>
+              <sfw:ApplicationRootMessageML xsi:type="tfp:TFPMessage">
+                <tfp:mmt>
+                  <tfp:optionMMCPartLink>
+                    <mmc:messageID>78865458</mmc:messageID>
+                    <mmc:versionID>218</mmc:versionID>
+                    <mmc:messageExpiryTime>2026-05-11T11:19:08+02:00</mmc:messageExpiryTime>
+                    <mmc:cancelFlag>false</mmc:cancelFlag>
+                    <mmc:partID>2</mmc:partID>
+                    <mmc:updateMode mmc:table="mmc002_UpdateMode" mmc:code="1"/>
+                  </tfp:optionMMCPartLink>
+                </tfp:mmt>
+                <!-- All vehicles -->
+                <tfp:method>
+                  <tfp:optionFlowStatus>
+                    <tfp:startTime>2026-05-11T11:10:15+02:00</tfp:startTime>
+                    <tfp:status>
+                      <tfp:LOS tfp:table="tfp003_LevelOfService" tfp:code="1"/>
+                      <tfp:averageSpeed>111</tfp:averageSpeed>
+                      <tfp:freeFlowTravelTime>71</tfp:freeFlowTravelTime>
+                      <tfp:delay>14</tfp:delay>
+                    </tfp:status>
+                    <tfp:statistics>
+                      <tfp:FlowQuality tfp:table="tfp008_FlowDataQuality" tfp:code="5"/>
+                    </tfp:statistics>
+                  </tfp:optionFlowStatus>
+                </tfp:method>
+                <!-- Passenger cars only -->
+                <tfp:method>
+                  <tfp:optionFlowStatus>
+                    <tfp:startTime>2026-05-11T11:10:15+02:00</tfp:startTime>
+                    <tfp:status>
+                      <tfp:LOS tfp:table="tfp003_LevelOfService" tfp:code="1"/>
+                      <tfp:averageSpeed>128</tfp:averageSpeed>
+                      <tfp:freeFlowTravelTime>71</tfp:freeFlowTravelTime>
+                      <tfp:delay>1</tfp:delay>
+                    </tfp:status>
+                    <tfp:restriction>
+                      <tfp:vehicleClassAssignment tfp:table="tfp001_VehicleClass" tfp:code="1"/>
+                    </tfp:restriction>
+                  </tfp:optionFlowStatus>
+                </tfp:method>
+              </sfw:ApplicationRootMessageML>
+            </sfw:ApplicationRootMessage>
+
+            <!-- Message 78865460 Part 2: congested traffic (LOS 4) -->
+            <sfw:ApplicationRootMessage>
+              <sfw:ApplicationRootMessageML xsi:type="tfp:TFPMessage">
+                <tfp:mmt>
+                  <tfp:optionMMCPartLink>
+                    <mmc:messageID>78865460</mmc:messageID>
+                    <mmc:versionID>45</mmc:versionID>
+                    <mmc:messageExpiryTime>2026-05-11T11:19:08+02:00</mmc:messageExpiryTime>
+                    <mmc:cancelFlag>false</mmc:cancelFlag>
+                    <mmc:partID>2</mmc:partID>
+                    <mmc:updateMode mmc:table="mmc002_UpdateMode" mmc:code="1"/>
+                  </tfp:optionMMCPartLink>
+                </tfp:mmt>
+                <tfp:method>
+                  <tfp:optionFlowStatus>
+                    <tfp:startTime>2026-05-11T11:10:15+02:00</tfp:startTime>
+                    <tfp:status>
+                      <tfp:LOS tfp:table="tfp003_LevelOfService" tfp:code="4"/>
+                      <tfp:averageSpeed>18</tfp:averageSpeed>
+                      <tfp:freeFlowTravelTime>42</tfp:freeFlowTravelTime>
+                      <tfp:delay>120</tfp:delay>
+                    </tfp:status>
+                    <tfp:statistics>
+                      <tfp:FlowQuality tfp:table="tfp008_FlowDataQuality" tfp:code="5"/>
+                    </tfp:statistics>
+                  </tfp:optionFlowStatus>
+                </tfp:method>
+              </sfw:ApplicationRootMessageML>
+            </sfw:ApplicationRootMessage>
+
+          </sfw:ServiceComponentFrameContent>
+        </sfw:ServiceComponent>
+
+      </sfw:ServiceComponentMultiplex>
+    </sfw:ServiceData>
+  </sfw:TransportFrame>
+</sfw:TPEGDocument>

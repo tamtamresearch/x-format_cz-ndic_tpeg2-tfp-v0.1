@@ -1,0 +1,266 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This XML schema is generated with tpegUMLconverter V2.3 -->
+<xs:schema xmlns="http://www.tisa.org/TPEG/OLR_1_1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tsf="http://www.tisa.org/TPEG/SFW_1_1" xmlns:tdt="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" targetNamespace="http://www.tisa.org/TPEG/OLR_1_1" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:import namespace="http://www.tisa.org/TPEG/SFW_1_1" schemaLocation="SFW_1_1.xsd"/>
+	<xs:import namespace="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" schemaLocation="TDT_2_1.xsd"/>
+	<xs:element name="OpenLRLocationReference" type="OpenLRLocationReference"><xs:annotation><xs:documentation>Component OpenLRLocationReference is the toolkit component. It provides an abstract location reference which could be a linear location, a point location, or an area location.
+ In Annex A, the TPEG binary representation for the OpenLRLocationReference is defined. In Annex B, the TPEG-ML representation for the OpenLRLocationReference is specified.
+ [TODO: add diagram]</xs:documentation></xs:annotation></xs:element>
+	<xs:complexType name="OpenLRLocationReference">
+		<xs:annotation><xs:documentation>Component OpenLRLocationReference is the toolkit component. It provides an abstract location reference which could be a linear location, a point location, or an area location.
+ In Annex A, the TPEG binary representation for the OpenLRLocationReference is defined. In Annex B, the TPEG-ML representation for the OpenLRLocationReference is specified.
+ [TODO: add diagram]</xs:documentation></xs:annotation><xs:complexContent>
+			<xs:extension base="tsf:ApplicationRootMessageML">
+				<xs:sequence>
+					<xs:element name="version" type="tdt:MajorMinorVersion"><xs:annotation><xs:documentation>The version information of OpenLRLocationReference.</xs:documentation></xs:annotation></xs:element>
+					<xs:element name="locationReference" type="AbstractLocationReference"><xs:annotation><xs:documentation>Switch between location reference types.</xs:documentation></xs:annotation></xs:element>
+					<xs:element name="locationDescription" type="LocationDescription" minOccurs="0"><xs:annotation><xs:documentation>The textual description of the location reference.</xs:documentation></xs:annotation></xs:element>
+					<xs:element name="structuredLocationDescription" type="StructuredLocationDescription" minOccurs="0" maxOccurs="unbounded"><xs:annotation><xs:documentation>A structured textual description of the location reference.</xs:documentation></xs:annotation></xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AbstractLocationReference">
+		<xs:annotation><xs:documentation>The abstract location reference shall function as a switching class between all the defined location reference types.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:choice minOccurs="1" maxOccurs="1">
+				<xs:element name="optionLinearLocationReference" type="LinearLocationReference" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionGeoCoordinateLocationReference" type="GeoCoordinateLocationReference" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionPointAlongLineLocationReference" type="PointAlongLineLocationReference" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionPOIWithAccessPointLocationReference" type="POIWithAccessPointLocationReference" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionCircleLocationReference" type="CircleLocationReference" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionPolygonLocationReference" type="PolygonLocationReference" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionRectangleLocationReference" type="RectangleLocationReference" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionGridLocationReference" type="GridLocationReference" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionClosedLinearLocationReference" type="ClosedLinearLocationReference" minOccurs="1" maxOccurs="1"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LinearLocationReference">
+		<xs:annotation><xs:documentation>Component LinearLocationReference specifies an OpenLR linear location reference.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="first" type="FirstLocationReferencePoint"><xs:annotation><xs:documentation>The first LRP.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="last" type="LastLocationReferencePoint"><xs:annotation><xs:documentation>The last LRP.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="intermediates" type="IntermediateLocationReferencePoint" minOccurs="0" maxOccurs="unbounded"><xs:annotation><xs:documentation>The sequence of intermediate LRP.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="positiveOffset" type="DistanceMetresMax15000" minOccurs="0"><xs:annotation><xs:documentation>The positive offset in metres.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="negativeOffset" type="DistanceMetresMax15000" minOccurs="0"><xs:annotation><xs:documentation>The negative offset in metres.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="shape" type="Shape" minOccurs="0"><xs:annotation><xs:documentation>The shape describes the location geometry.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GeoCoordinateLocationReference">
+		<xs:annotation><xs:documentation>Component GeoCoordinateLocationReference specifies an OpenLR geo-coordinate location reference.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="coordinate" type="AbsoluteGeoCoordinate"><xs:annotation><xs:documentation>The absolute geo-coordinate.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PointAlongLineLocationReference">
+		<xs:annotation><xs:documentation>Component PointAlongLineLocationReference specifies an OpenLR point-along-line location reference.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="pointAlongLine" type="PointLocationLineReferenceData"><xs:annotation><xs:documentation>The network bound point location.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="shape" type="Shape" minOccurs="0"><xs:annotation><xs:documentation>The shape describes the location geometry.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="POIWithAccessPointLocationReference">
+		<xs:annotation><xs:documentation>Component POIWithAccessPointLocationReference specifies an OpenLR poi-with-access-point location reference.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="lineWithAccessPoint" type="PointLocationLineReferenceData"><xs:annotation><xs:documentation>The network bound part defining the access point to the POI.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="poi" type="RelativeGeoCoordinate"><xs:annotation><xs:documentation>The POIi.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="shape" type="Shape" minOccurs="0"><xs:annotation><xs:documentation>The shape describes the location geometry.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="pathToPoi" type="Path" minOccurs="0"><xs:annotation><xs:documentation>The shape describes the path between the access point and the point of interest.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CircleLocationReference">
+		<xs:annotation><xs:documentation>Component CircleLocationReference specifies an OpenLR circular area location reference.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="centerPoint" type="AbsoluteGeoCoordinate"><xs:annotation><xs:documentation>The centre point of the circle.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="radius" type="tdt:DistanceMetres"><xs:annotation><xs:documentation>The radius measured in metres.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="isFuzzyArea" type="tdt:Boolean"><xs:annotation><xs:documentation>The boundary of the area is fuzzy.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PolygonLocationReference">
+		<xs:annotation><xs:documentation>Component PolygonLocationReference specifies an OpenLR polygon area location reference.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="startCoordinate" type="AbsoluteGeoCoordinate"><xs:annotation><xs:documentation>The first coordinate of the polygon area location reference.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="coordinatePath" type="RelativeGeoCoordinate" minOccurs="2" maxOccurs="unbounded"><xs:annotation><xs:documentation>The ordered sequence of relative coordinates defining the remaining corner points of the polygon. The first relative coordinate is relative to the absolute coordinate.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="isFuzzyArea" type="tdt:Boolean"><xs:annotation><xs:documentation>The boundary of the area is fuzzy.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="holes" type="PolygonLocationReference" minOccurs="0" maxOccurs="unbounded"><xs:annotation><xs:documentation>A polygon location may contain one or more holes.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RectangleLocationReference">
+		<xs:annotation><xs:documentation>Component RectangleLocationReference specifies an OpenLR rectangle area location reference.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="rectangle" type="Rectangle"><xs:annotation><xs:documentation>The actual rectangle.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="isFuzzyArea" type="tdt:Boolean"><xs:annotation><xs:documentation>The boundary of the area is fuzzy.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GridLocationReference">
+		<xs:annotation><xs:documentation>Component GridLocationReference specifies an OpenLR grid area location reference.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="baseElement" type="Rectangle"><xs:annotation><xs:documentation>The base element of the grid.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="nrColumns" type="tdt:IntUnLi"><xs:annotation><xs:documentation>Column count of the grid, with nrColumns &amp;gt; 1.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="nrRows" type="tdt:IntUnLi"><xs:annotation><xs:documentation>Row count of the grid, with nrRows &amp;gt; 1.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="isFuzzyArea" type="tdt:Boolean"><xs:annotation><xs:documentation>The boundary of the area is fuzzy.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClosedLinearLocationReference">
+		<xs:annotation><xs:documentation>Component ClosedLinearLocationReference specifies an OpenLR closed linear area location reference.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="first" type="FirstLocationReferencePoint"><xs:annotation><xs:documentation>The first LRP of the closed linear location.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="intermediates" type="IntermediateLocationReferencePoint" minOccurs="0" maxOccurs="unbounded"><xs:annotation><xs:documentation>The ordered sequence of intermediate LRP.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="last" type="LineProperties"><xs:annotation><xs:documentation>The line properties are combined with the coordinates of the first LRP and form the last LRP of the closed linear location.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="shape" type="Shape" minOccurs="0"><xs:annotation><xs:documentation>The shape describes the location geometry.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LineProperties">
+		<xs:annotation><xs:documentation>Component LineProperties specifies the line properties of an LRP.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="frc" type="olr001_FunctionalRoadClass"><xs:annotation><xs:documentation>The functional road class value.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="fow" type="olr002_FormOfWay"><xs:annotation><xs:documentation>The form of way value.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="bearing" type="Bearing"><xs:annotation><xs:documentation>The bearing value.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="srBearingLeft" type="Bearing" minOccurs="0"><xs:annotation><xs:documentation>Bearing of road on the left hand side of the referenced line.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="srBearingRight" type="Bearing" minOccurs="0"><xs:annotation><xs:documentation>Bearing of road on the right hand side of the referenced line.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PathProperties">
+		<xs:annotation><xs:documentation>Component PathProperties specifies the path properties of an LRP, that is, the set of attributes defining the location reference path between two subsequent LRPs.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="lfrcnp" type="olr001_FunctionalRoadClass"><xs:annotation><xs:documentation>The lowest functional road class to the next LRP along the location reference path.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="dnp" type="DistanceMetresMax15000"><xs:annotation><xs:documentation>The distance to the next LRP, i.e., the length of the location reference path.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="againstDrivingDirection" type="tdt:Boolean"><xs:annotation><xs:documentation>True indicates that the direction of traffic is against driving direction for all lines in the path.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LocationDescription">
+		<xs:annotation><xs:documentation>Component LocationDescription provides localised textual descriptions of the location.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="description" type="tdt:LocalisedLongString" maxOccurs="unbounded"><xs:annotation><xs:documentation>The list of localised location descriptions.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="StructuredLocationDescription">
+		<xs:annotation><xs:documentation>Structured location descriptions may be used displaying purposes. The text blocks may be compiled to a readable text and may be presented to the user.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="languageCode" type="tdt:typ001_LanguageCode" minOccurs="0"><xs:annotation><xs:documentation>The code for the language used in this strucutred description.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="roadName" type="tdt:ShortString" minOccurs="0"><xs:annotation><xs:documentation>Name of the road the location is part of</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="roadNumber" type="tdt:ShortString" minOccurs="0"><xs:annotation><xs:documentation>The road number the location is part of.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="travelDirection" type="tdt:ShortString" minOccurs="0"><xs:annotation><xs:documentation>The overall travel direction, e.g. Northbound.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="fromArea" type="tdt:ShortString" minOccurs="0"><xs:annotation><xs:documentation>Area where the start of the path is in.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="toArea" type="tdt:ShortString" minOccurs="0"><xs:annotation><xs:documentation>Area indicating the direction to which the road leads to.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="start" type="tdt:ShortString" minOccurs="0"><xs:annotation><xs:documentation>Concrete start of the path on that road.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="end" type="tdt:ShortString" minOccurs="0"><xs:annotation><xs:documentation>Concrete end of the path on that road.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="area" type="HierarchicalAreaName" minOccurs="0"><xs:annotation><xs:documentation>Describes the hierarchical (administrative) area.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="at" type="tdt:ShortString" minOccurs="0"><xs:annotation><xs:documentation>Concrete describtion of the location (e.g. crossing or POI).</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AbstractShape">
+		<xs:sequence>
+			<xs:choice minOccurs="1" maxOccurs="1">
+				<xs:element name="optionShape" type="Shape" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionPath" type="Path" minOccurs="1" maxOccurs="1"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Shape">
+		<xs:annotation><xs:documentation>Component Shape specifies a sequence of coordinates defining a shape.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="points" type="AbsoluteGeoCoordinate" maxOccurs="unbounded"><xs:annotation><xs:documentation>Sequence of absolute coordinates.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Path">
+		<xs:annotation><xs:documentation>Component Path specifies a sequence of coordinates defining a path.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="points" type="AbsoluteGeoCoordinate" maxOccurs="unbounded"><xs:annotation><xs:documentation>Sequence of absolute coordinates.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HierarchicalAreaName">
+		<xs:sequence>
+			<xs:element name="areaName" type="tdt:ShortString"><xs:annotation><xs:documentation>The hierarchical area name.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="detailAreaName" type="tdt:ShortString" minOccurs="0" maxOccurs="unbounded"><xs:annotation><xs:documentation>A more detailed area name.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AbsoluteGeoCoordinate">
+		<xs:annotation><xs:documentation>Data structure AbsoluteGeoCoordinate specifies a geo position with longitude and latitude values with a deca micro degree accuracy stored in 24 bit integer value. The calculation rules to convert geo-coordinates from degree to integer value and back are outlined in section [TODO: add link to calculation rule]. Elevation information can be assigned optionally.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="longitude" type="tdt:IntSi24"><xs:annotation><xs:documentation>24-bit representation of a longitude value in decamicrodegree precision.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="latitude" type="tdt:IntSi24"><xs:annotation><xs:documentation>24-bit representation of a latitude value in decamicrodegree precision.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="altitude" type="tdt:IntSiLoMB" minOccurs="0"><xs:annotation><xs:documentation>Elevation of location in metres above/below Mean Sea Level.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RelativeGeoCoordinate">
+		<xs:annotation><xs:documentation>Data structure RelativeGeoCoordinate stores geo-coordinates as relative values in deca micro degree precision. The calculation rule for relative geo-coordinates are outlined in section [TODO: add link to calculation rule]. Elevation information can be assigned optionally.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="longitude" type="tdt:IntSiLi"><xs:annotation><xs:documentation>The relative longitude value in decamicrodegree precision.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="latitude" type="tdt:IntSiLi"><xs:annotation><xs:documentation>The relative latitude value in decamicrodegree precision.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="altitude" type="tdt:IntSiLoMB" minOccurs="0"><xs:annotation><xs:documentation>Elevation of location in metres above/below Mean Sea Level.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Bearing">
+		<xs:annotation><xs:documentation>Data structure Bearing stores the value of a bearing angle in a compressed way. The full circle is divided into 256 sectors which yields a precision of 360/256°.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="value" type="tdt:IntUnTi"><xs:annotation><xs:documentation>Stores compressed bearing angle value.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DistanceMetresMax15000">
+		<xs:annotation><xs:documentation>Data structure DistanceMetresMax15000 stores a distance value in metre precision up to 15000 m.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="value" type="tdt:DistanceMetres"><xs:annotation><xs:documentation>Distance in metres, value &amp;lt;=15000.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FirstLocationReferencePoint">
+		<xs:annotation><xs:documentation>Data structure FirstLocationReferencePoint specifies the first LRP of an ordered sequence of LRPs.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="coordinate" type="AbsoluteGeoCoordinate"><xs:annotation><xs:documentation>The coordinate of the first LRP.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="lineProperties" type="LineProperties"><xs:annotation><xs:documentation>The line properties of the first LRP.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="pathProperties" type="PathProperties"><xs:annotation><xs:documentation>The path properties of the first LRP.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IntermediateLocationReferencePoint">
+		<xs:annotation><xs:documentation>Data structure IntermediateLocationReferencePoint specifies an LRP which is not the first LRP and not the last LRP of an ordered sequence of LRPs.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="coordinate" type="RelativeGeoCoordinate"><xs:annotation><xs:documentation>The coordinates of the intermediate LRP which are relative to the coordinates of the preceding LRP in the sequence of LRPs.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="lineProperties" type="LineProperties"><xs:annotation><xs:documentation>The line properties of the intermediate LRP.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="pathProperties" type="PathProperties"><xs:annotation><xs:documentation>The path properties of the intermediate LRP.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LastLocationReferencePoint">
+		<xs:annotation><xs:documentation>Data structure LastLocationReferencePoint specifies the last LRP of an ordered sequence of LRPs.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="coordinate" type="RelativeGeoCoordinate"><xs:annotation><xs:documentation>The coordinates of the last LRP which are relative to the coordinates of the preceding LRP in the sequence of LRPs.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="lineProperties" type="LineProperties"><xs:annotation><xs:documentation>The line properties of the last LRP.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PointLocationLineReferenceData">
+		<xs:annotation><xs:documentation>Data structure PointLocationLineReferenceData combines common properties of point location types with network connectivity. It provides information about the location reference path described by the first LRP and the last LRP, the actual point location along that path as defined by the positive offset value and orientation and side of road information of that point location with respect to the referenced path.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="first" type="FirstLocationReferencePoint"><xs:annotation><xs:documentation>The first LRP.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="last" type="LastLocationReferencePoint"><xs:annotation><xs:documentation>The last LRP.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="sideOfRoad" type="olr004_SideOfRoad"><xs:annotation><xs:documentation>The side-of-road information.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="orientation" type="olr003_Orientation"><xs:annotation><xs:documentation>The orientation information.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="positiveOffset" type="DistanceMetresMax15000" minOccurs="0"><xs:annotation><xs:documentation>The positive offset relative to the first LRP marking the actual point location on the reference path.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Rectangle">
+		<xs:annotation><xs:documentation>Data structure Rectangle specifies a rectangle with a lower left and an upper right coordinate.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="lowerLeftCoordinate" type="AbsoluteGeoCoordinate"><xs:annotation><xs:documentation>The coordinates of the lower left corner of the rectangle.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="upperRightCoordinate" type="AbsoluteGeoCoordinate"><xs:annotation><xs:documentation>The coordinates of the upper right corner of the rectangle.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="olr001_FunctionalRoadClass">
+		<xs:attribute name="table" type="xs:string" fixed="olr001_FunctionalRoadClass" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="7"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="olr002_FormOfWay">
+		<xs:attribute name="table" type="xs:string" fixed="olr002_FormOfWay" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="10"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="olr003_Orientation">
+		<xs:attribute name="table" type="xs:string" fixed="olr003_Orientation" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="3"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="olr004_SideOfRoad">
+		<xs:attribute name="table" type="xs:string" fixed="olr004_SideOfRoad" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="3"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>

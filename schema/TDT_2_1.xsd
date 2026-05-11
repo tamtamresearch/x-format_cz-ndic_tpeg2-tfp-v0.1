@@ -1,0 +1,265 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema xmlns="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:simpleType name="BitArray">
+		<xs:annotation><xs:documentation>Constructed for TPEG to protobuf conversion
+ This is an encoding specific data type used for encoding an array of bits. The bits are encoded in a sequence of bytes, where the first bit of each byte is a continuation flag (shown as c in the figure [BitArray] below). If this bit is set (=1) there follows at least one more byte in this bit array. The last byte always has this bit cleared (=0). A BitArray represents a list of Boolean values which is implemented in the same way as for all lists. The first byte holds bits numbered from zero to six in that order. The second byte holds bits numbered seven to 13, again in that order, and so on. The ordering is sequential from first to last bit. This use, to ensure consistency with other lists, differs from the encoding of numeric values which use a Big-endian bit and byte order.</xs:documentation></xs:annotation><xs:restriction base="xs:string">
+			<xs:pattern value="(0|1)*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Boolean">
+		<xs:restriction base="xs:boolean"/>
+	</xs:simpleType>
+	<xs:simpleType name="DateTime">
+		<xs:restriction base="xs:dateTime"/>
+	</xs:simpleType>
+	<xs:complexType name="DaySelector">
+		<xs:annotation><xs:documentation>A DaySelector attribute can be used to select one or more week days. The Boolean attributes indicate whether a particular day is included in the selection, if the attribute value is true, the day is selected. These seven attributes are mandatory Booleans, encoded using a BitArray.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="Monday" minOccurs="0"><xs:annotation><xs:documentation>Set to true to select every monday.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="Tuesday" minOccurs="0"><xs:annotation><xs:documentation>Set to true to select every tuesday.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="Wednesday" minOccurs="0"><xs:annotation><xs:documentation>Set to true to select every wednesday.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="Thursday" minOccurs="0"><xs:annotation><xs:documentation>Set to true to select every thursday.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="Friday" minOccurs="0"><xs:annotation><xs:documentation>Set to true to select every friday.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="Saturday" minOccurs="0"><xs:annotation><xs:documentation>Set to true to select every saturday.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="Sunday" minOccurs="0"><xs:annotation><xs:documentation>Set to true to select every sunday.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="DistanceMetres">
+		<xs:restriction base="xs:unsignedInt"/>
+	</xs:simpleType>
+	<xs:simpleType name="DistanceCentiMetres">
+		<xs:restriction base="xs:unsignedInt"/>
+	</xs:simpleType>
+	<xs:simpleType name="Duration">
+		<xs:restriction base="xs:unsignedInt"/>
+	</xs:simpleType>
+	<xs:simpleType name="FixedPercentage">
+		<xs:restriction base="xs:unsignedByte">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FixedPointNumber">
+		<xs:restriction base="xs:decimal">
+			<xs:minInclusive value="-2147483648.99"/>
+			<xs:maxInclusive value="2147483648.99"/>
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Float">
+		<xs:restriction base="xs:float"/>
+	</xs:simpleType>
+	<xs:simpleType name="IntSiTi">
+		<xs:restriction base="xs:byte"/>
+	</xs:simpleType>
+	<xs:simpleType name="IntSiLi">
+		<xs:restriction base="xs:short"/>
+	</xs:simpleType>
+	<xs:simpleType name="IntSi24">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="-8388608"/>
+			<xs:maxInclusive value="8388607"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IntSiLo">
+		<xs:annotation><xs:documentation>Represents a signed integer value in the range -2147483648 and 2147483647. In XML it is encoded as xs:int. In binary, these values are encoded as signed 32 bit integers.</xs:documentation></xs:annotation><xs:restriction base="xs:int"/>
+	</xs:simpleType>
+	<xs:simpleType name="IntSiLoMB">
+		<xs:restriction base="xs:int"/>
+	</xs:simpleType>
+	<xs:simpleType name="IntUnTi">
+		<xs:restriction base="xs:unsignedByte"/>
+	</xs:simpleType>
+	<xs:simpleType name="IntUnLi">
+		<xs:restriction base="xs:unsignedShort"/>
+	</xs:simpleType>
+	<xs:simpleType name="IntUn24">
+		<xs:restriction base="xs:unsignedInt">
+			<xs:maxInclusive value="16777215"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IntUnLo">
+		<xs:restriction base="xs:unsignedInt"/>
+	</xs:simpleType>
+	<xs:simpleType name="IntUnLoMB">
+		<xs:restriction base="xs:unsignedInt"/>
+	</xs:simpleType>
+	<xs:simpleType name="ShortString">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LongString">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="65535"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="LocalisedShortString">
+		<xs:annotation><xs:documentation>A short string accompanied with a language code that identifies the language that the string is given in.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="languageCode" type="typ001_LanguageCode"><xs:annotation><xs:documentation>Specifies the language used for this string.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="value" type="ShortString"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LocalisedLongString">
+		<xs:annotation><xs:documentation>A long string accompanied with a language code that identifies the language that the string is given in.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="languageCode" type="typ001_LanguageCode"><xs:annotation><xs:documentation>Specifies the language used for this string.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="value" type="LongString"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="MajorMinorVersion">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([0-9]|1[0-5])\.([0-9]|1[0-5])"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Probability">
+		<xs:restriction base="xs:decimal">
+			<xs:minInclusive value="0.00"/>
+			<xs:maxInclusive value="1.00"/>
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ServiceIdentifier">
+		<xs:annotation><xs:documentation>A service identifier is an abstract data type that defines a single service identifier, in XML it is encoded as a dotted string i.j.k where i, j and k are the three parts of the service identifier respectively. The data type is derived from xs:string and has the added pattern restriction ^(((25[0-5])|(2[0-4][0-9])|([0-1][0-9]{2})|([0-9][0-9])|([0-9]))\.){2}((25[0-5])|(2[0-4][0-9])|([0-1][0-9]{2})|([0-9][0-9])|([0-9])). In binary, a service identifier is encoded as a sequence of three IntUnTi values.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="SID_A" type="xs:unsignedByte"/>
+			<xs:element name="SID_B" type="xs:unsignedByte"/>
+			<xs:element name="SID_C" type="xs:unsignedByte"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="TimeInterval">
+		<xs:annotation><xs:documentation>The TimeInterval data structure can be used when an interval in time must be specified with more flexibility than the simple Duration type allows.
+ Each TimeInterval attribute has a number of optional attributes. It is maximally 101 years long. In XML this is encoded as xs:duration. And in binary each attribute can be used as stand-alone attribute or in combination with other attributes. When an attribute is not given, the value zero is implied. Every TimeInterval must specify at least one attribute.</xs:documentation></xs:annotation><xs:restriction base="xs:duration"/>
+	</xs:simpleType>
+	<xs:simpleType name="TimePoint">
+		<xs:annotation><xs:documentation>The TimePoint data structure can be used when a point in time must be specified with less granularity than the simple DateTime allows. Each TimePoint attribute has a number of optional attributes. Each attribute can be used as stand-alone attribute or in combination with other attributes. Every TimePoint must specify at least one attribute.
+ In XML, a TimePoint is encoded as follows:
+ TODO: Insert XSD snippet
+  
+    ExampleXML
+  
+  
+   every January every day at 23 hours
+   &amp;lt;TimePoint month="1" hour="23"/&amp;gt;
+  
+   January 2009
+   %lt;TimePoint year="2009" month="1"/&amp;gt;
+  
+   Use of an opening time of ten o'clock am every day in a hypothetical application
+   
+ &amp;lt;OpeningTime&amp;gt;
+  &amp;lt;TimePoint hour="10"/&amp;gt;
+ &amp;lt;/OpeningTime&amp;gt;
+  
+   Use of a closing time of eight o'clock pm every day in a hypothetical application
+   
+ &amp;lt;ClosingTime&amp;gt;
+  &amp;lt;TimePoint hour="20"/&amp;gt;
+ &amp;lt;/ClosingTime&amp;gt;
+  
+  In binary encoding, 1970 is subtracted from the year, mapping the range 1970-2100 to the values 0-130.</xs:documentation></xs:annotation><xs:restriction base="xs:string">
+			<xs:pattern value="\d{4}-(0[0–9]|1[012])-([0–2][0–9]|30|31) T([0–1]\d|2[0–3]):[0–5]\d:[0–5]\d"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="TimeToolkit">
+		<xs:annotation><xs:documentation>The time toolkit allows different date and time information to be described. For example where an event has a start but no known end-time. In such a case we should used only a start point but omit and end-time. Each TimeToolkit attribute has a number of optional attributes. Each attribute can be used as stand-alone attribute or in combination with other attributes. Every TimeToolkit must specify at least one attribute.
+ In XML the TimeToolkit is encoded as follows:
+ TODO: Insert XSD snippet
+  NB! For a timestamp the DateTime type should be used.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="startTime" type="TimePoint" minOccurs="0"><xs:annotation><xs:documentation>An event time point (e.g. flight departure) or an event start time (e.g. open from).</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="stopTime" type="TimePoint" minOccurs="0"><xs:annotation><xs:documentation>An event stop time (e.g. open to). The stop time can be used only together with a start time.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="duration" type="TimeInterval" minOccurs="0"><xs:annotation><xs:documentation>A time interval (e.g. free parking limit).</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="specialDay" type="typ002_SpecialDay" minOccurs="0"><xs:annotation><xs:documentation>Relevant days of a certain type (e.g. weekdays or holiday).</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="daySelector" type="DaySelector" minOccurs="0"><xs:annotation><xs:documentation>Gives the option to specify days of the week.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="Velocity">
+		<xs:restriction base="xs:unsignedByte"/>
+	</xs:simpleType>
+	<xs:simpleType name="Weight">
+		<xs:restriction base="xs:unsignedInt"/>
+	</xs:simpleType>
+	<xs:simpleType name="ByteFieldAttribute">
+		<xs:restriction base="xs:base64Binary">
+			<xs:minLength value="0"/>
+			<xs:maxLength value="65535"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="typ001_LanguageCode">
+		<xs:attribute name="table" type="xs:string" fixed="typ001_LanguageCode" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="186"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="typ002_SpecialDay">
+		<xs:attribute name="table" type="xs:string" fixed="typ002_SpecialDay" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="10"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="typ003_CurrencyType">
+		<xs:attribute name="table" type="xs:string" fixed="typ003_CurrencyType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:pattern value="([1–9]?\d|1([0–6]\d|7[0–4])|255)"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="typ004_NumericalMagnitude">
+		<xs:attribute name="table" type="xs:string" fixed="typ004_NumericalMagnitude" use="required"/>
+		<xs:attribute name="code" type="xs:unsignedByte" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="typ005_CountryCode">
+		<xs:attribute name="table" type="xs:string" fixed="typ005_CountryCode" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="250"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="typ006_OrientationType">
+		<xs:attribute name="table" type="xs:string" fixed="typ006_OrientationType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="8"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="typ007_Priority">
+		<xs:attribute name="table" type="xs:string" fixed="typ007_Priority" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="3"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="typ008_OptionalBoolean">
+		<xs:attribute name="table" type="xs:string" fixed="typ008_OptionalBoolean" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="2"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>

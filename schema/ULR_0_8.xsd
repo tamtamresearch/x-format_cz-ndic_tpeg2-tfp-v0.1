@@ -1,0 +1,326 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This XML schema is generated with tpegUMLconverter V2.3 -->
+<xs:schema xmlns="http://www.tisa.org/TPEG/ULR_0_8" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tsf="http://www.tisa.org/TPEG/SFW_1_1" xmlns:tdt="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" targetNamespace="http://www.tisa.org/TPEG/ULR_0_8" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:import namespace="http://www.tisa.org/TPEG/SFW_1_1" schemaLocation="SFW_1_1.xsd"/>
+	<xs:import namespace="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" schemaLocation="TDT_2_1.xsd"/>
+	<xs:element name="UniversalLocationReference" type="UniversalLocationReference"><xs:annotation><xs:documentation>The ULR location referencing method is a dynamic location referencing method (Universal Location Referencing) which aims to overcome the limits of TPEG-LOC (in terms of efficiency and accuracy) based on an open, royalty-free method. ULR offers a flexible method to fulfil needs of content providers and users in relevant domains. It aims to be really &amp;ldquo;universal&amp;rdquo;, designed for human centred assistance-devices as well as map-related devices like navigation systems. Therefore it supports human-understandable representations such as text as well as machine-processable coding for the map-matching process on on-board digital maps. The ULR method is specified inTISA specification SP13008.</xs:documentation></xs:annotation></xs:element>
+	<xs:complexType name="UniversalLocationReference">
+		<xs:annotation><xs:documentation>The ULR location referencing method is a dynamic location referencing method (Universal Location Referencing) which aims to overcome the limits of TPEG-LOC (in terms of efficiency and accuracy) based on an open, royalty-free method. ULR offers a flexible method to fulfil needs of content providers and users in relevant domains. It aims to be really &amp;ldquo;universal&amp;rdquo;, designed for human centred assistance-devices as well as map-related devices like navigation systems. Therefore it supports human-understandable representations such as text as well as machine-processable coding for the map-matching process on on-board digital maps. The ULR method is specified inTISA specification SP13008.</xs:documentation></xs:annotation><xs:complexContent>
+			<xs:extension base="tsf:ApplicationRootMessageML">
+				<xs:sequence>
+					<xs:element name="specVersionId" type="tdt:MajorMinorVersion"/>
+					<xs:choice maxOccurs="unbounded">
+						<xs:element name="ulrType" type="ULRType" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:choice>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ULRType">
+		<xs:sequence>
+			<xs:choice minOccurs="1" maxOccurs="1">
+				<xs:element name="optionPoint" type="Point" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionLinear" type="Linear" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionArea" type="Area" minOccurs="1" maxOccurs="1"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Point">
+		<xs:sequence>
+			<xs:element name="coor" type="ExtendedCoordinate"/>
+			<xs:element name="pointDescriptor" type="PointDescriptor" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Linear">
+		<xs:sequence>
+			<xs:element name="newPath" type="tdt:Boolean"/>
+			<xs:element name="bound" type="tdt:Boolean"/>
+			<xs:element name="bothDirections" type="tdt:Boolean"/>
+			<xs:element name="coor" type="ExtendedCoordinate" minOccurs="0" maxOccurs="2"/>
+			<xs:element name="instr" type="DirectionInstruction" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="direction" type="ulr005_DirectionType" minOccurs="0"/>
+			<xs:element name="linearDescriptor" type="LinearDescriptor" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Area">
+		<xs:sequence>
+			<xs:element name="coor" type="ExtendedCoordinate" maxOccurs="unbounded"/>
+			<xs:element name="expansion" type="tdt:typ004_NumericalMagnitude" minOccurs="0"/>
+			<xs:element name="areaDescriptor" type="AreaDescriptor" minOccurs="0"/>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="insidePoint" type="Point" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MatchInfoBasic">
+		<xs:sequence>
+			<xs:element name="heading" type="tdt:IntUnTi"/>
+			<xs:element name="roadAttrs" type="tdt:IntSiTi"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MatchInfoExtensionComponent">
+</xs:complexType>
+	<xs:complexType name="DirectionInstruction">
+		<xs:sequence>
+			<xs:element name="brAngle" type="tdt:IntSiTi"/>
+			<xs:element name="distance" type="tdt:DistanceMetres"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExtendedCoordinate">
+		<xs:sequence>
+			<xs:element name="wgs84" type="WGS84Coordinate" minOccurs="0"/>
+			<xs:element name="wgs84High" type="WGS84CoordinateHighRes" minOccurs="0"/>
+			<xs:element name="deltaWgs" type="WGS84Delta" minOccurs="0"/>
+			<xs:element name="height" type="tdt:IntSiLi" minOccurs="0"/>
+			<xs:element name="accuracy" type="tdt:typ004_NumericalMagnitude" minOccurs="0"/>
+			<xs:element name="level" type="LevelDescriptor" minOccurs="0"/>
+			<xs:element name="matchInfo" type="MatchInfoBasic" minOccurs="0"/>
+			<xs:element name="extensions" type="MatchInfoExtensionComponent" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WGS84Coordinate">
+		<xs:sequence>
+			<xs:element name="longitude" type="tdt:IntSi24"/>
+			<xs:element name="latitude" type="tdt:IntSi24"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WGS84CoordinateHighRes">
+		<xs:sequence>
+			<xs:element name="longitude" type="tdt:IntSiLo"/>
+			<xs:element name="latitude" type="tdt:IntSiLo"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WGS84Delta">
+		<xs:sequence>
+			<xs:element name="deltaLongitude" type="tdt:IntSiLoMB"/>
+			<xs:element name="deltaLatitude" type="tdt:IntSiLoMB"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PointDescriptor">
+		<xs:sequence>
+			<xs:element name="pointType" type="ulr001_PointType" minOccurs="0"/>
+			<xs:element name="pointSubType" type="ulr100_PointSubType" minOccurs="0"/>
+			<xs:element name="pointName" type="tdt:LocalisedShortString" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LinearDescriptor">
+		<xs:sequence>
+			<xs:element name="linearType" type="ulr002_LinearType" minOccurs="0"/>
+			<xs:element name="linearSubType" type="ulr200_LinearSubType" minOccurs="0"/>
+			<xs:element name="linearName" type="tdt:LocalisedShortString" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="linearNameDirection" type="tdt:LocalisedShortString" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="linearNameFrom" type="tdt:LocalisedShortString" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="linearNameTo" type="tdt:LocalisedShortString" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="fromLoc" type="PointDescriptor" minOccurs="0"/>
+			<xs:element name="toLoc" type="PointDescriptor" minOccurs="0"/>
+			<xs:element name="absoluteDistance" type="tdt:IntUnLoMB" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AreaDescriptor">
+		<xs:sequence>
+			<xs:element name="areaType" type="ulr003_AreaType" minOccurs="0"/>
+			<xs:element name="areaSubType" type="ulr300_AreaSubType" minOccurs="0"/>
+			<xs:element name="areaQualifier" type="ulr006_AreaQualifierType" minOccurs="0"/>
+			<xs:element name="areaName" type="tdt:LocalisedShortString" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LevelDescriptor">
+		<xs:sequence>
+			<xs:element name="levelType" type="ulr004_LevelType" minOccurs="0"/>
+			<xs:element name="levelName" type="tdt:LocalisedShortString" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="relativeHeight" type="tdt:IntSiLoMB" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ulr001_PointType">
+		<xs:attribute name="table" type="xs:string" fixed="ulr001_PointType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="255"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ulr002_LinearType">
+		<xs:attribute name="table" type="xs:string" fixed="ulr002_LinearType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="255"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ulr003_AreaType">
+		<xs:attribute name="table" type="xs:string" fixed="ulr003_AreaType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="255"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ulr004_LevelType">
+		<xs:attribute name="table" type="xs:string" fixed="ulr004_LevelType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="255"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ulr005_DirectionType">
+		<xs:attribute name="table" type="xs:string" fixed="ulr005_DirectionType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="255"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ulr006_AreaQualifierType">
+		<xs:attribute name="table" type="xs:string" fixed="ulr006_AreaQualifierType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="255"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ulr100_PointSubType">
+		<xs:attribute name="table" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="code" type="xs:unsignedByte" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="ulr101_RoadObjectType">
+		<xs:attribute name="table" type="xs:string" fixed="ulr101_RoadObjectType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="255"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ulr102_StationType">
+		<xs:attribute name="table" type="xs:string" fixed="ulr102_StationType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="255"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ulr103_PointsOfInterestType">
+		<xs:attribute name="table" type="xs:string" fixed="ulr103_PointsOfInterestType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="255"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ulr200_LinearSubType">
+		<xs:attribute name="table" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="code" type="xs:unsignedByte" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="ulr201_RoadType">
+		<xs:attribute name="table" type="xs:string" fixed="ulr201_RoadType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="255"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ulr203_CommuterTrainType">
+		<xs:attribute name="table" type="xs:string" fixed="ulr203_CommuterTrainType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="255"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ulr300_AreaSubType">
+		<xs:attribute name="table" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="code" type="xs:unsignedByte" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="ulr301_BoundedAreaType">
+		<xs:attribute name="table" type="xs:string" fixed="ulr301_BoundedAreaType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="255"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ulr302_GeographicalFeatureType">
+		<xs:attribute name="table" type="xs:string" fixed="ulr302_GeographicalFeatureType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="255"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ulr303_ActivityAreaType">
+		<xs:attribute name="table" type="xs:string" fixed="ulr303_ActivityAreaType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="255"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ulr304_ParkingAreaType">
+		<xs:attribute name="table" type="xs:string" fixed="ulr304_ParkingAreaType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="255"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,236 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This XML schema is generated with tpegUMLconverter V2.3 -->
+<xs:schema xmlns="http://www.tisa.org/TPEG/DLR_4_0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tsf="http://www.tisa.org/TPEG/SFW_1_1" xmlns:tdt="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" targetNamespace="http://www.tisa.org/TPEG/DLR_4_0" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:import namespace="http://www.tisa.org/TPEG/SFW_1_1" schemaLocation="SFW_1_1.xsd"/>
+	<xs:import namespace="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" schemaLocation="TDT_2_1.xsd"/>
+	<xs:complexType name="AttributeList">
+		<xs:sequence>
+			<xs:element name="attribute" type="Attribute" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CorePoint">
+		<xs:sequence>
+			<xs:element name="locationPoint" type="tdt:Boolean"/>
+			<xs:element name="Dperp" type="tdt:IntUnTi" minOccurs="0"/>
+			<xs:element name="longitude1" type="tdt:IntSiTi" minOccurs="0"/>
+			<xs:element name="longitude2" type="tdt:IntSiLi" minOccurs="0"/>
+			<xs:element name="longitudeAbs3" type="tdt:IntSi24" minOccurs="0"/>
+			<xs:element name="longitudeAbs4" type="tdt:IntSiLoMB" minOccurs="0"/>
+			<xs:element name="latitude1" type="tdt:IntSiTi" minOccurs="0"/>
+			<xs:element name="latitude2" type="tdt:IntSiLi" minOccurs="0"/>
+			<xs:element name="latitudeAbs3" type="tdt:IntSi24" minOccurs="0"/>
+			<xs:element name="latitudeAbs4" type="tdt:IntSiLoMB" minOccurs="0"/>
+			<xs:element name="rpSig" type="RPSignature" minOccurs="0"/>
+			<xs:element name="ipSig" type="IPSignature" minOccurs="0"/>
+			<xs:element name="srSig" type="SideRoadSignature" minOccurs="0"/>
+			<xs:element name="attributeList" type="AttributeList" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DLR1LocationReference" type="DLR1LocationReference"><xs:annotation><xs:documentation>The DLR1 location referencing method is a dynamic location referencing method developed by ISO TC204.
+ The method is designed to provide compact location references that allow accurate location referencing for 100% of the road network. DLR1 location references are machine readable and are primarily aimed at dynamic route guidance navigation Fcstems. The DLR1 method and the TPEG2 conformant structure of TPEG2-DLR are specified in ISO 17572-3.</xs:documentation></xs:annotation></xs:element>
+	<xs:complexType name="DLR1LocationReference">
+		<xs:annotation><xs:documentation>The DLR1 location referencing method is a dynamic location referencing method developed by ISO TC204.
+ The method is designed to provide compact location references that allow accurate location referencing for 100% of the road network. DLR1 location references are machine readable and are primarily aimed at dynamic route guidance navigation Fcstems. The DLR1 method and the TPEG2 conformant structure of TPEG2-DLR are specified in ISO 17572-3.</xs:documentation></xs:annotation><xs:complexContent>
+			<xs:extension base="tsf:ApplicationRootMessageML">
+				<xs:sequence>
+					<xs:element name="version" type="tdt:IntUnTi"/>
+					<xs:element name="linearLocation" type="LinearLocation" minOccurs="0"/>
+					<xs:element name="explicitAreaLocation" type="ExplicitAreaLocation" minOccurs="0"/>
+					<xs:element name="implicitAreaLocation" type="ImplicitAreaLocation" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ExpAreaSegLinLoc">
+		<xs:sequence>
+			<xs:element name="isPartOfLoc" type="tdt:Boolean"/>
+			<xs:element name="linearLocation" type="LinearLocation"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExpAreaSegPolygon">
+		<xs:sequence>
+			<xs:element name="isPartOfLoc" type="tdt:Boolean"/>
+			<xs:element name="geoPoint" type="GeoPoint" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExpAreaSegment">
+		<xs:sequence>
+			<xs:choice minOccurs="1" maxOccurs="1">
+				<xs:element name="optionExpAreaSegLinLoc" type="ExpAreaSegLinLoc" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionExpAreaSegPolygon" type="ExpAreaSegPolygon" minOccurs="1" maxOccurs="1"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExplicitAreaLocation">
+		<xs:sequence>
+			<xs:element name="expAreaType" type="dlr007_ExpAreaType"/>
+			<xs:element name="isClosed" type="tdt:Boolean"/>
+			<xs:element name="radiusA" type="tdt:IntUnLoMB" minOccurs="0"/>
+			<xs:element name="radiusB" type="tdt:IntUnLoMB" minOccurs="0"/>
+			<xs:element name="rotationAngle" type="tdt:IntUnTi" minOccurs="0"/>
+			<xs:element name="expAreaSegment" type="ExpAreaSegment" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExtendedLocation">
+		<xs:sequence>
+			<xs:element name="fcMin" type="tdt:IntUnTi"/>
+			<xs:element name="connectionPointIndex" type="tdt:IntUnLoMB"/>
+			<xs:element name="extendedPoint" type="ExtendedPoint" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExtendedPoint">
+		<xs:sequence>
+			<xs:element name="destinationFlag" type="tdt:Boolean"/>
+			<xs:element name="Dperp" type="tdt:IntUnTi" minOccurs="0"/>
+			<xs:element name="longitude1" type="tdt:IntSiTi" minOccurs="0"/>
+			<xs:element name="longitude2" type="tdt:IntSiLi" minOccurs="0"/>
+			<xs:element name="longitudeAbs3" type="tdt:IntSi24" minOccurs="0"/>
+			<xs:element name="longitudeAbs4" type="tdt:IntSiLoMB" minOccurs="0"/>
+			<xs:element name="latitude1" type="tdt:IntSiTi" minOccurs="0"/>
+			<xs:element name="latitude2" type="tdt:IntSiLi" minOccurs="0"/>
+			<xs:element name="latitudeAbs3" type="tdt:IntSi24" minOccurs="0"/>
+			<xs:element name="latitudeAbs4" type="tdt:IntSiLoMB" minOccurs="0"/>
+			<xs:element name="attributeList" type="AttributeList" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ImplicitAreaLocation">
+		<xs:sequence>
+			<xs:element name="subNetworkLocRef" type="SubNetworkLocationReference" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LinearLocation">
+		<xs:sequence>
+			<xs:element name="locationDirection" type="tdt:Boolean"/>
+			<xs:element name="locationType" type="dlr001_LocationType" minOccurs="0"/>
+			<xs:element name="corePoint" type="CorePoint" maxOccurs="unbounded"/>
+			<xs:element name="extendedLocation" type="ExtendedLocation" minOccurs="0"/>
+			<xs:element name="attributeList" type="AttributeList" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SubNetworkLocationReference">
+		<xs:sequence>
+			<xs:element name="LRConnection" type="SubNetworkConnection"/>
+			<xs:element name="linearLocation" type="LinearLocation"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Attribute">
+		<xs:sequence>
+			<xs:element name="attrNum" type="tdt:IntUnLoMB"/>
+			<xs:element name="intSiLoMB" type="tdt:IntSiLoMB" minOccurs="0"/>
+			<xs:element name="intUnLoMB" type="tdt:IntUnLoMB" minOccurs="0"/>
+			<xs:element name="shortString" type="tdt:ShortString" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GeoPoint">
+		<xs:sequence>
+			<xs:element name="longitude1" type="tdt:IntSiTi" minOccurs="0"/>
+			<xs:element name="longitude2" type="tdt:IntSiLi" minOccurs="0"/>
+			<xs:element name="longitudeAbs3" type="tdt:IntSi24" minOccurs="0"/>
+			<xs:element name="longitudeAbs4" type="tdt:IntSiLoMB" minOccurs="0"/>
+			<xs:element name="latitude1" type="tdt:IntSiTi" minOccurs="0"/>
+			<xs:element name="latitude2" type="tdt:IntSiLi" minOccurs="0"/>
+			<xs:element name="latitudeAbs3" type="tdt:IntSi24" minOccurs="0"/>
+			<xs:element name="latitudeAbs4" type="tdt:IntSiLoMB" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IPSignature">
+		<xs:sequence>
+			<xs:element name="drivingAlignedAllowed" type="tdt:Boolean"/>
+			<xs:element name="drivingReverseAllowed" type="tdt:Boolean"/>
+			<xs:element name="repeatedIPSignature" type="tdt:Boolean"/>
+			<xs:element name="functionalRoadClass" type="tdt:IntUnTi" minOccurs="0"/>
+			<xs:element name="intersectionType" type="dlr003_IntersectionType" minOccurs="0"/>
+			<xs:element name="numOfInterIntersect" type="tdt:IntUnTi" minOccurs="0"/>
+			<xs:element name="formOfWay" type="dlr005_FormOfWay" minOccurs="0"/>
+			<xs:element name="roadDescriptor" type="tdt:ShortString" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RPSignature">
+		<xs:sequence>
+			<xs:element name="bearing" type="tdt:IntUnTi"/>
+			<xs:element name="acessibleForRouting" type="tdt:Boolean"/>
+			<xs:element name="routingPointDistance0" type="tdt:Boolean"/>
+			<xs:element name="routingPointDistPrecision" type="tdt:Boolean"/>
+			<xs:element name="routingPointDistance" type="tdt:IntUnLoMB" minOccurs="0"/>
+			<xs:element name="parCarriagewayInd" type="tdt:IntUnLoMB" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SideRoadSignature">
+		<xs:sequence>
+			<xs:element name="connectionAngle" type="tdt:IntSiTi"/>
+			<xs:element name="accessibleForRouting" type="tdt:Boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SubNetworkConnection">
+		<xs:sequence>
+			<xs:element name="subNetworkIndex" type="tdt:IntUnLoMB"/>
+			<xs:element name="connectionPointIndex" type="tdt:IntUnLoMB"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="dlr001_LocationType">
+		<xs:attribute name="table" type="xs:string" fixed="dlr001_LocationType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="1"/>
+					<xs:maxInclusive value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="dlr002_AttributeType">
+		<xs:attribute name="table" type="xs:string" fixed="dlr002_AttributeType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="1"/>
+					<xs:maxInclusive value="18"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="dlr003_IntersectionType">
+		<xs:attribute name="table" type="xs:string" fixed="dlr003_IntersectionType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="1"/>
+					<xs:maxInclusive value="6"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="dlr004_DirectionOfTrafficFlow">
+		<xs:attribute name="table" type="xs:string" fixed="dlr004_DirectionOfTrafficFlow" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="4"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="dlr005_FormOfWay">
+		<xs:attribute name="table" type="xs:string" fixed="dlr005_FormOfWay" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="1"/>
+					<xs:maxInclusive value="11"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="dlr007_ExpAreaType">
+		<xs:attribute name="table" type="xs:string" fixed="dlr007_ExpAreaType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="1"/>
+					<xs:maxInclusive value="4"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>

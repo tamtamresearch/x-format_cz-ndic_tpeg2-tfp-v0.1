@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema xmlns="http://www.tisa.org/TPEG/SFW_1_1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tdt="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" targetNamespace="http://www.tisa.org/TPEG/SFW_1_1" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:import namespace="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" schemaLocation="TDT_2_1.xsd"/>
+	<xs:element name="TPEGDocument" type="TPEGDocument"/>
+	<xs:complexType name="TPEGDocument">
+		<xs:sequence>
+			<xs:element name="TransportFrame" type="TransportFrame" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="timeStamp" type="tdt:DateTime"/>
+		<xs:attribute name="version" type="tdt:IntUnTi" use="required"/>
+		<xs:attribute name="docType" type="DocumentType" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="TransportFrame">
+		<xs:sequence>
+			<xs:element name="TransportFrameBin" type="TPEGbin" minOccurs="0"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="StreamDirectory" type="StreamDirectoryFrame"/>
+				<xs:element name="ServiceData" type="ServiceFrame"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="StreamDirectoryFrame">
+		<xs:sequence>
+			<xs:element name="SID" type="tdt:ServiceIdentifier" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ServiceFrame">
+		<xs:sequence>
+			<xs:element name="SID" type="tdt:ServiceIdentifier" minOccurs="0"/>
+			<xs:element name="ServEncID" type="EncryptionIndicator" minOccurs="0"/>
+			<xs:element name="ServiceComponentMultiplex" type="ServCompMultiplex"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ServCompMultiplex">
+		<xs:sequence>
+			<xs:element name="ServiceComponent" type="ServiceComponent" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ServiceComponent">
+		<xs:sequence>
+			<xs:element name="ServiceComponentBin" type="TPEGbin" minOccurs="0"/>
+			<xs:element name="ServiceComponentFrameContent" type="ServiceComponentFrameContent" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="applicationId" type="tdt:IntUnLi"/>
+		<xs:attribute name="contentId" type="tdt:IntUnTi"/>
+		<xs:attribute name="majorApplicationVersion" type="tdt:IntUnTi"/>
+		<xs:attribute name="minorApplicationVersion" type="tdt:IntUnTi"/>
+		<xs:attribute name="encId" type="tdt:IntUnTi"/>
+		<xs:attribute name="safetyFlag" type="xs:boolean"/>
+		<xs:attribute name="originatorSID_A" type="tdt:IntUnTi"/>
+		<xs:attribute name="originatorSID_B" type="tdt:IntUnTi"/>
+		<xs:attribute name="originatorSID_C" type="tdt:IntUnTi"/>
+	</xs:complexType>
+	<xs:simpleType name="ServiceComponentIdentifier">
+		<xs:restriction base="tdt:IntUnTi">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ServiceComponentFrameContent" abstract="true">
+		<xs:sequence>
+			<xs:element name="SCID" type="ServiceComponentIdentifier"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ServCompFrameProtected">
+		<xs:complexContent>
+			<xs:extension base="ServiceComponentFrameContent">
+				<xs:sequence>
+					<xs:element name="ApplicationRootMessage" type="ApplicationRootMessage" minOccurs="0" maxOccurs="unbounded"/>
+					<!-- binCRC not suitable in xml -->
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ServCompFrameCountedProtected">
+		<xs:complexContent>
+			<xs:extension base="ServiceComponentFrameContent">
+				<xs:sequence>
+					<xs:element name="MessageCount" type="tdt:IntUnTi" minOccurs="0"/>
+					<xs:element name="ApplicationRootMessage" type="ApplicationRootMessage" minOccurs="0" maxOccurs="unbounded"/>
+					<!-- binCRC not suitable in xml -->
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ServCompFramePrioritisedProtected">
+		<xs:complexContent>
+			<xs:extension base="ServiceComponentFrameContent">
+				<xs:sequence>
+					<xs:element name="Priority" type="tdt:typ007_Priority"/>
+					<xs:element name="ApplicationRootMessage" type="ApplicationRootMessage" minOccurs="0" maxOccurs="unbounded"/>
+					<!-- binCRC not suitable in xml -->
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ServCompFramePrioritisedCountedProtected">
+		<xs:complexContent>
+			<xs:extension base="ServiceComponentFrameContent">
+				<xs:sequence>
+					<xs:element name="Priority" type="tdt:typ007_Priority"/>
+					<xs:element name="MessageCount" type="tdt:IntUnTi" minOccurs="0"/>
+					<xs:element name="ApplicationRootMessage" type="ApplicationRootMessage" minOccurs="0" maxOccurs="unbounded"/>
+					<!-- binCRC not suitable in xml -->
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ApplicationRootMessage">
+		<xs:sequence>
+			<xs:element name="ApplicationRootMessageBin" type="TPEGbin" minOccurs="0"/>
+			<xs:element name="ApplicationRootMessageML" type="ApplicationRootMessageML" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ApplicationRootMessageML" abstract="true"/>
+	<!-- all application root messages shall be derived from this element -->
+	<xs:simpleType name="DocumentType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="fullRepository"/>
+			<xs:enumeration value="partialRepository"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EncryptionIndicator">
+		<xs:restriction base="tdt:IntUnTi">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="TPEGbin">
+		<xs:simpleContent>
+			<xs:extension base="xs:base64Binary">
+				<xs:attribute name="byteSize" type="tdt:IntUnLi" use="required"/>
+				<!--size of the base64decoded data -->
+				<xs:attribute name="byteCRChex" type="xs:string"/>
+				<!-- crc of the base64decoded data -->
+				<xs:attribute name="statusLevel" type="statusLevel"/>
+				<xs:attribute name="statusDescription" type="xs:string"/>
+				<!-- OK, Warning, Error, WarningLostContent, ErrorInvalidFrame, ErrorMissingContent, ErrorTooMuchContent -->
+				<xs:attribute name="serviceComponentIsEncrypted" type="xs:boolean"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="statusLevel">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Success"/>
+			<!--statusDescription is informal only -->
+			<xs:enumeration value="Error"/>
+			<!--the data is probably not usable -->
+			<xs:enumeration value="Warning"/>
+			<!-- the frame is syntactically correct, but content ,may have been lost -->
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

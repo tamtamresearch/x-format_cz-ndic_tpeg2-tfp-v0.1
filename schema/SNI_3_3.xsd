@@ -1,0 +1,369 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This XML schema is generated with tpegUMLconverter V2.1 -->
+<xs:schema xmlns="http://www.tisa.org/TPEG/SNI_3_3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tsf="http://www.tisa.org/TPEG/SFW_1_1" xmlns:tdt="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" targetNamespace="http://www.tisa.org/TPEG/SNI_3_3" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:import namespace="http://www.tisa.org/TPEG/SFW_1_1" schemaLocation="SFW_1_1.xsd"/>
+	<xs:import namespace="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" schemaLocation="TDT_2_1.xsd"/>
+	<xs:element name="SNI1Template" type="SNI1Template"/>
+	<xs:complexType name="SNI1Template">
+		<xs:complexContent>
+			<xs:extension base="tsf:ApplicationRootMessageML">
+				<xs:sequence>
+					<xs:choice minOccurs="1" maxOccurs="1">
+						<xs:element name="optionCurrentServiceInformation" type="CurrentServiceInformation" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="optionServiceLogo" type="ServiceLogo" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="optionSubscriberInformation" type="SubscriberInformation" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="optionFreeTextInformation" type="FreeTextInformation" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="optionHelpInformation" type="HelpInformation" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="optionGST1_FastTuningTable" type="GST1_FastTuningTable" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="optionGST2_TimeScheduleTable" type="GST2_TimeScheduleTable" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="optionGST3_ContentDescription" type="GST3_ContentDescription" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="optionGST4_GeographicalCoverage" type="GST4_GeographicalCoverage" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="optionGST5_ServiceComponentReset" type="GST5_ServiceComponentReset" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="optionGST6_ConditionalAccessInformationReference" type="GST6_ConditionalAccessInformationReference" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="optionGST7_Versioning" type="GST7_Versioning" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="optionGST_ServiceTableAccelerator" type="GST_ServiceTableAccelerator" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="optionLinkageToSameService" type="LinkageToSameService" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="optionLinkageToRelatedService" type="LinkageToRelatedService" minOccurs="1" maxOccurs="1"/>
+						<xs:element name="optionSIT1_NumberOfMessages" type="SIT1_NumberOfMessages" minOccurs="1" maxOccurs="1"/>
+					</xs:choice>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CurrentServiceInformation">
+		<xs:sequence>
+			<xs:element name="serviceName" type="tdt:ShortString"/>
+			<xs:element name="serviceDescription" type="tdt:ShortString"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ServiceLogo">
+		<xs:sequence>
+			<xs:element name="graphicType" type="sni001_GraphicType"/>
+			<xs:element name="graphicData" type="ByteField"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SubscriberInformation">
+		<xs:sequence>
+			<xs:element name="subscriberData" type="ByteField"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FreeTextInformation">
+		<xs:sequence>
+			<xs:element name="freeText" type="tdt:ShortString"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HelpInformation">
+		<xs:sequence>
+			<xs:element name="helpText" type="tdt:ShortString"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GST_GuideToServiceTables">
+		<xs:sequence>
+			<xs:choice minOccurs="1" maxOccurs="1">
+					   </xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GST1_FastTuningTable">
+		<xs:sequence>
+			<xs:element name="tableVersion" type="tdt:IntUnTi"/>
+			<xs:element name="characterEncoding" type="sni002_CharacterEncoding"/>
+			<xs:element name="tableEntry" type="GST1_Entry" maxOccurs="255"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GST2_TimeScheduleTable">
+		<xs:sequence>
+			<xs:element name="tableVersion" type="tdt:IntUnTi"/>
+			<xs:element name="tableEntry" type="GST2_Entry" maxOccurs="255"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GST3_ContentDescription">
+		<xs:sequence>
+			<xs:element name="tableVersion" type="tdt:IntUnTi"/>
+			<xs:element name="tableEntry" type="GST3_Entry" maxOccurs="255"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GST4_GeographicalCoverage">
+		<xs:sequence>
+			<xs:element name="tableVersion" type="tdt:IntUnTi"/>
+			<xs:element name="tableEntry" type="GST4_Entry" maxOccurs="255"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GST5_ServiceComponentReset">
+		<xs:sequence>
+			<xs:element name="tableVersion" type="tdt:IntUnTi"/>
+			<xs:element name="tableEntry" type="GST5_Entry" maxOccurs="255"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GST6_ConditionalAccessInformationReference">
+		<xs:sequence>
+			<xs:element name="tableVersion" type="tdt:IntUnTi"/>
+			<xs:element name="tableEntry" type="GST6_Entry" maxOccurs="255"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GST7_Versioning">
+		<xs:sequence>
+			<xs:element name="tableVersion" type="tdt:IntUnTi"/>
+			<xs:element name="tableEntry" type="GST7_Entry" maxOccurs="255"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GST_ServiceTableAccelerator">
+		<xs:sequence>
+			<xs:element name="tableVersion" type="tdt:IntUnTi"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LinkageToSameService">
+		<xs:sequence>
+			<xs:element name="tableVersion" type="tdt:IntUnTi"/>
+			<xs:element name="tableEntry" type="SameServiceEntry" maxOccurs="255"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LinkageToRelatedService">
+		<xs:sequence>
+			<xs:element name="tableVersion" type="tdt:IntUnTi"/>
+			<xs:element name="tableEntry" type="RelatedServiceEntry" maxOccurs="255"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BearerLinkageInfo">
+		<xs:sequence>
+			<xs:choice minOccurs="1" maxOccurs="1">
+				<xs:element name="optionBearerLinkageInfoDAB" type="BearerLinkageInfoDAB" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionBearerLinkageInfoDARC" type="BearerLinkageInfoDARC" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionBearerLinkageInfoDVB" type="BearerLinkageInfoDVB" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionBearerLinkageInfoURL" type="BearerLinkageInfoURL" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionBearerLinkageInfoHDRadio" type="BearerLinkageInfoHDRadio" minOccurs="1" maxOccurs="1"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BearerLinkageInfoDAB">
+		<xs:sequence>
+			<xs:element name="extendedCountryCode" type="tdt:IntUnTi"/>
+			<xs:element name="ensembleIdentification" type="tdt:IntUnLi"/>
+			<xs:element name="dabFrequency" type="DABFrequency" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BearerLinkageInfoDARC">
+		<xs:sequence>
+			<xs:element name="extendedCountryCode" type="tdt:IntUnTi"/>
+			<xs:element name="DARCServiceID" type="tdt:IntUnLi"/>
+			<xs:element name="fmFrequency" type="FMFrequency" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BearerLinkageInfoDVB">
+		<xs:sequence>
+			<xs:element name="dvbFrequency" type="DVBFrequency" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BearerLinkageInfoURL">
+		<xs:sequence>
+			<xs:element name="uniformResourceLocator" type="tdt:LongString"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BearerLinkageInfoHDRadio">
+		<xs:sequence>
+			<xs:element name="hdRadioStationID" type="HDRadioStationID"/>
+			<xs:element name="hdFMBearerInfo" type="HDFMBearerInfo" minOccurs="0" maxOccurs="255"/>
+			<xs:element name="hdAMBearerInfo" type="HDAMBearerInfo" minOccurs="0" maxOccurs="255"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SIT_ServiceInformationTables">
+		<xs:sequence>
+			<xs:choice minOccurs="1" maxOccurs="1">
+</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SIT1_NumberOfMessages">
+		<xs:sequence>
+			<xs:element name="currentGST1TableVersion" type="tdt:IntUnTi"/>
+			<xs:element name="tableEntry" type="SIT1_Entry" minOccurs="1" maxOccurs="255"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MaskedTime">
+		<xs:sequence>
+			<xs:element name="year" type="tdt:IntUnTi"/>
+			<xs:element name="month" type="tdt:IntUnTi"/>
+			<xs:element name="day" type="tdt:IntUnTi"/>
+			<xs:element name="hour" type="tdt:IntUnTi"/>
+			<xs:element name="min" type="tdt:IntUnTi"/>
+			<xs:element name="sec" type="tdt:IntUnTi"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DayMask">
+		<xs:sequence>
+			<xs:element name="everySunday" type="tdt:Boolean"/>
+			<xs:element name="everyMonday" type="tdt:Boolean"/>
+			<xs:element name="everyTuesday" type="tdt:Boolean"/>
+			<xs:element name="everyWednesday" type="tdt:Boolean"/>
+			<xs:element name="everyThursday" type="tdt:Boolean"/>
+			<xs:element name="everyFriday" type="tdt:Boolean"/>
+			<xs:element name="everySaturday" type="tdt:Boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AppStartTime">
+		<xs:sequence>
+			<xs:element name="maskedTime" type="MaskedTime"/>
+			<xs:element name="dayMask" type="DayMask"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TimeSlot">
+		<xs:sequence>
+			<xs:element name="appStartTime" type="AppStartTime"/>
+			<xs:element name="duration" type="tdt:Duration"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OpTime">
+		<xs:sequence>
+			<xs:element name="startTime" type="tdt:IntUnLo"/>
+			<xs:element name="stopTime" type="tdt:IntUnLo"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GeographicCoverage">
+		<xs:sequence>
+			<xs:element name="pointNorthWest" type="CoordinatePair"/>
+			<xs:element name="pointSouthEast" type="CoordinatePair"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CoordinatePair">
+		<xs:sequence>
+			<xs:element name="longitude" type="tdt:IntSiLi"/>
+			<xs:element name="latitude" type="tdt:IntSiLi"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ByteField">
+		<xs:restriction base="xs:base64Binary"/>
+	</xs:simpleType>
+	<xs:complexType name="GST1_Entry">
+		<xs:sequence>
+			<xs:element name="SCID" type="tdt:IntUnTi"/>
+			<xs:element name="originatorServiceID" type="tdt:ServiceIdentifier" minOccurs="0"/>
+			<xs:element name="contentID" type="tdt:IntUnTi"/>
+			<xs:element name="applicationID" type="tdt:IntUnLi"/>
+			<xs:element name="operatingTime" type="OpTime" minOccurs="0"/>
+			<xs:element name="encryptionIndicator" type="tdt:IntUnTi" minOccurs="0"/>
+			<xs:element name="safetyFlagIsSet" type="tdt:Boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GST2_Entry">
+		<xs:sequence>
+			<xs:element name="SCID" type="tdt:IntUnTi"/>
+			<xs:element name="timeInfo" type="TimeSlot"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GST3_Entry">
+		<xs:sequence>
+			<xs:element name="SCID" type="tdt:IntUnTi"/>
+			<xs:element name="contentDescription" type="tdt:ShortString"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GST4_Entry">
+		<xs:sequence>
+			<xs:element name="SCID" type="tdt:IntUnTi"/>
+			<xs:element name="geographicCoverage" type="GeographicCoverage"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GST5_Entry">
+		<xs:sequence>
+			<xs:element name="SCID" type="tdt:IntUnTi"/>
+			<xs:element name="resetTimeStamp" type="tdt:IntUnLo"/>
+			<xs:element name="k" type="tdt:IntUnTi"/>
+			<xs:element name="applicationContent" type="ByteField" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GST6_Entry">
+		<xs:sequence>
+			<xs:element name="SCID" type="tdt:IntUnTi"/>
+			<xs:element name="referencedCAISCID" type="tdt:IntUnTi"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GST7_Entry">
+		<xs:sequence>
+			<xs:element name="SCID" type="tdt:IntUnTi"/>
+			<xs:element name="majorVersionNumber" type="tdt:IntUnTi"/>
+			<xs:element name="minorVersionNumber" type="tdt:IntUnTi"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RelatedServiceEntry">
+		<xs:sequence>
+			<xs:element name="SCID" type="tdt:IntUnTi"/>
+			<xs:element name="carrierSID" type="tdt:ServiceIdentifier"/>
+			<xs:element name="originatorSID" type="tdt:ServiceIdentifier"/>
+			<xs:element name="contentID" type="tdt:IntUnTi"/>
+			<xs:element name="applicationID" type="tdt:IntUnLi"/>
+			<xs:element name="bearerInformation" type="BearerLinkageInfo" minOccurs="0"/>
+			<xs:element name="serviceName" type="tdt:ShortString" minOccurs="0"/>
+			<xs:element name="serviceDescription" type="tdt:ShortString" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DABFrequency">
+		<xs:sequence>
+			<xs:element name="centreFrequency" type="tdt:IntUn24"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DVBFrequency">
+		<xs:sequence>
+			<xs:element name="dvbFrequency" type="ByteField"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FMFrequency">
+		<xs:sequence>
+			<xs:element name="fmFrequency" type="tdt:IntUnTi"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AMFrequency">
+		<xs:sequence>
+			<xs:element name="amFrequency" type="tdt:IntUnTi"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SameServiceEntry">
+		<xs:sequence>
+			<xs:element name="SCID" type="tdt:IntUnTi"/>
+			<xs:element name="serviceID" type="tdt:ServiceIdentifier"/>
+			<xs:element name="bearerInformation" type="BearerLinkageInfo" minOccurs="0"/>
+			<xs:element name="regionalisationFlag" type="tdt:Boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SIT1_Entry">
+		<xs:sequence>
+			<xs:element name="SCID" type="tdt:IntUnTi"/>
+			<xs:element name="numberOfMessages" type="tdt:IntUnLo"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HDRadioStationID">
+		<xs:sequence>
+			<xs:element name="stationIDNumber" type="tdt:IntUnLo"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HDFMBearerInfo">
+		<xs:sequence>
+			<xs:element name="hdRadioStationID" type="HDRadioStationID"/>
+			<xs:element name="fmFrequency" type="FMFrequency"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HDAMBearerInfo">
+		<xs:sequence>
+			<xs:element name="hdRadioStationID" type="HDRadioStationID"/>
+			<xs:element name="amFrequency" type="AMFrequency"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="sni001_GraphicType">
+		<xs:attribute name="table" type="xs:string" fixed="sni001_GraphicType" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="2"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="sni002_CharacterEncoding">
+		<xs:attribute name="table" type="xs:string" fixed="sni002_CharacterEncoding" use="required"/>
+		<xs:attribute name="code" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:unsignedByte">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="127"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>

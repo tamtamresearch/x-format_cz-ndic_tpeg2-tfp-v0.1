@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This XML schema is generated with tpegUMLconverter V2.3 -->
+<xs:schema xmlns="http://www.tisa.org/TPEG/TLR_2_0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tsf="http://www.tisa.org/TPEG/SFW_1_1" xmlns:tdt="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" targetNamespace="http://www.tisa.org/TPEG/TLR_2_0" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:import namespace="http://www.tisa.org/TPEG/SFW_1_1" schemaLocation="SFW_1_1.xsd"/>
+	<xs:import namespace="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" schemaLocation="TDT_2_1.xsd"/>
+	<xs:element name="TMCLocationReference" type="TMCLocationReference"><xs:annotation><xs:documentation>The TMC location stores a pre-coded location description including the possibility to code precisely a part of a road section in-between TMC locations.</xs:documentation></xs:annotation></xs:element>
+	<xs:complexType name="TMCLocationReference">
+		<xs:annotation><xs:documentation>The TMC location stores a pre-coded location description including the possibility to code precisely a part of a road section in-between TMC locations.</xs:documentation></xs:annotation><xs:complexContent>
+			<xs:extension base="tsf:ApplicationRootMessageML">
+				<xs:sequence>
+					<xs:element name="locationID" type="tdt:IntUnLi"><xs:annotation><xs:documentation>The actual location number. (Primary location)</xs:documentation></xs:annotation></xs:element>
+					<xs:element name="countryCode" type="tdt:IntUnTi"><xs:annotation><xs:documentation>Defines the different countries being responsible for the database creation. The table of country codes is specified in ISO 14819-3</xs:documentation></xs:annotation></xs:element>
+					<xs:element name="locationTableNumber" type="tdt:IntUnTi"><xs:annotation><xs:documentation>The value is specified per country and may differ over time.</xs:documentation></xs:annotation></xs:element>
+					<xs:element name="direction" type="tdt:Boolean"><xs:annotation><xs:documentation>if the direction flag is true it means positive direction i.e. following to the successor in the location list.</xs:documentation></xs:annotation></xs:element>
+					<xs:element name="bothDirections" type="tdt:Boolean"><xs:annotation><xs:documentation>If set to true the location shall be treated as being applicable for both directions. 
+ NOTE: Be aware that ISO18234 defines this information in two peaces. 1. implicitly per event code and 2. as inversion bit In the control code.</xs:documentation></xs:annotation></xs:element>
+					<xs:element name="extent" type="tdt:IntUnTi" minOccurs="0"><xs:annotation><xs:documentation>Number of hops in the linked list of location codes. The direction is defined by the direction attribute. Absent value is defined 0 and means inside the current location.</xs:documentation></xs:annotation></xs:element>
+					<xs:element name="extendedCountryCode" type="tdt:IntUnTi" minOccurs="0"><xs:annotation><xs:documentation>In non-European countries, the full range of location tables per country code can be used provided that the Extended Country Code associated with the ALERT-C location table is defined and provided (Extended Country Codes are defined in IEC 62106:2000)</xs:documentation></xs:annotation></xs:element>
+					<xs:element name="locationTableVersion" type="tdt:IntUnLoMB" minOccurs="0"><xs:annotation><xs:documentation>if one byte 4 bits for major and 3 bits for minor
+ if two bytes 7 bits for major and 7 bits for minor
+ three bytes not possible because TMC restricts to 0-99 for both</xs:documentation></xs:annotation></xs:element>
+					<xs:element name="preciseTMCInfo" type="PreciseTMCInformation" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PreciseTMCInformation">
+		<xs:annotation><xs:documentation>Defines the collection of optional precise TMC location coding.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="distanceAccuracy" type="tdt:IntUnTi" minOccurs="0"><xs:annotation><xs:documentation>0 = 100m, 1 = 500m, 2 = 1km, 3 = more than 1km
+ 100m if attribute is absent.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="hazardDistance1" type="tdt:IntUnTi" minOccurs="0"><xs:annotation><xs:documentation>Upstream distance from primary location (against the direction of traffic), also known as D1. Range up to 25km calculated in steps of 100m</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="hazardDistance2" type="tdt:IntUnLi" minOccurs="0"><xs:annotation><xs:documentation>Same as hazardDistance1 but range up to 6553km</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="problemLength1" type="tdt:IntUnTi" minOccurs="0"><xs:annotation><xs:documentation>Distance the start of the problem to the end of the problem. Which is not necessarily the primary location. Length up to 25km</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="problemLength2" type="tdt:IntUnLi" minOccurs="0"><xs:annotation><xs:documentation>Same as problemLength1 but length up to 6553km</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

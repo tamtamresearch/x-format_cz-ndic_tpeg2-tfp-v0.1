@@ -1,0 +1,254 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+  Sample: TPEG2 TFP Persistent Location Store (partialRepository).
+
+  Predefined Location Set: carries the stable parts of multi-part TFP messages:
+    - Master message  (optionMMCMasterLink) — announces which parts exist
+    - Part 1          (optionMMCPartLink, partID=1) — location reference
+
+  Part 2 (flow status) is transmitted separately in tpeg-tfp.xml and
+  is correlated via the shared mmc:messageID.
+
+  Two sample locations are included:
+    - 78746043  TMC 37307 + OpenLR linear reference
+    - 78865458  TMC 25650 + OpenLR linear reference
+-->
+<sfw:TPEGDocument
+  xmlns:lrc="http://www.tisa.org/TPEG/LRC_3_0"
+  xmlns:mmc="http://www.tisa.org/TPEG/MMC_1_1"
+  xmlns:olr="http://www.tisa.org/TPEG/OLR_1_1"
+  xmlns:sfw="http://www.tisa.org/TPEG/SFW_1_1"
+  xmlns:sni="http://www.tisa.org/TPEG/SNI_3_3"
+  xmlns:tdt="http://www.tisa.org/TPEG/TPEGDataTypes_2_1"
+  xmlns:tfp="http://www.tisa.org/TPEG/TFP_1_1"
+  xmlns:tlr="http://www.tisa.org/TPEG/TLR_2_0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  sfw:version="1"
+  sfw:docType="partialRepository"
+  sfw:timeStamp="2026-03-30T10:27:42+02:00">
+  <sfw:TransportFrame>
+    <sfw:ServiceData>
+      <sfw:SID>
+        <tdt:SID_A>0</tdt:SID_A>
+        <tdt:SID_B>1</tdt:SID_B>
+        <tdt:SID_C>1</tdt:SID_C>
+      </sfw:SID>
+      <sfw:ServiceComponentMultiplex>
+
+        <!-- SCID 0: SNI service description -->
+        <sfw:ServiceComponent sfw:applicationId="0" sfw:contentId="0">
+          <sfw:ServiceComponentFrameContent xsi:type="sfw:ServCompFrameProtected">
+            <sfw:SCID>0</sfw:SCID>
+            <sfw:ApplicationRootMessage>
+              <sfw:ApplicationRootMessageML xsi:type="sni:SNI1Template">
+                <sni:optionCurrentServiceInformation>
+                  <sni:serviceName>TPEG_CZ_FCD</sni:serviceName>
+                  <sni:serviceDescription>Plynulost dopravního proudu pro celou ČR</sni:serviceDescription>
+                </sni:optionCurrentServiceInformation>
+              </sfw:ApplicationRootMessageML>
+            </sfw:ApplicationRootMessage>
+            <sfw:ApplicationRootMessage>
+              <sfw:ApplicationRootMessageML xsi:type="sni:SNI1Template">
+                <sni:optionGST1_FastTuningTable>
+                  <sni:tableVersion>1</sni:tableVersion>
+                  <sni:characterEncoding sni:table="sni002_CharacterEncoding" sni:code="125"/>
+                  <sni:tableEntry>
+                    <sni:SCID>1</sni:SCID>
+                    <sni:contentID>1</sni:contentID>
+                    <sni:applicationID>7</sni:applicationID>
+                    <sni:safetyFlagIsSet>false</sni:safetyFlagIsSet>
+                  </sni:tableEntry>
+                </sni:optionGST1_FastTuningTable>
+              </sfw:ApplicationRootMessageML>
+            </sfw:ApplicationRootMessage>
+          </sfw:ServiceComponentFrameContent>
+        </sfw:ServiceComponent>
+
+        <!-- SCID 1: TFP PLS messages (master + Part 1 location for each measurement site) -->
+        <sfw:ServiceComponent sfw:applicationId="7" sfw:contentId="1">
+          <sfw:ServiceComponentFrameContent xsi:type="sfw:ServCompFrameProtected">
+            <sfw:SCID>1</sfw:SCID>
+
+            <!-- ── Location 1 (TMC 37307) ─────────────────────────────────── -->
+
+            <!-- Master: lists the two parts of message 78746043 -->
+            <sfw:ApplicationRootMessage>
+              <sfw:ApplicationRootMessageML xsi:type="tfp:TFPMessage">
+                <tfp:mmt>
+                  <tfp:optionMMCMasterLink>
+                    <mmc:messageID>78746043</mmc:messageID>
+                    <mmc:versionID>6</mmc:versionID>
+                    <mmc:messageExpiryTime>2026-09-28T10:27:42+02:00</mmc:messageExpiryTime>
+                    <mmc:cancelFlag>false</mmc:cancelFlag>
+                    <mmc:multiPartMessageDirectory>
+                      <mmc:partID>1</mmc:partID>
+                      <mmc:partType mmc:table="mmc001_PartType" mmc:code="1"/>
+                    </mmc:multiPartMessageDirectory>
+                    <mmc:multiPartMessageDirectory>
+                      <mmc:partID>2</mmc:partID>
+                      <mmc:partType mmc:table="mmc001_PartType" mmc:code="2"/>
+                    </mmc:multiPartMessageDirectory>
+                  </tfp:optionMMCMasterLink>
+                </tfp:mmt>
+              </sfw:ApplicationRootMessageML>
+            </sfw:ApplicationRootMessage>
+
+            <!-- Part 1: location reference for message 78746043 -->
+            <sfw:ApplicationRootMessage>
+              <sfw:ApplicationRootMessageML xsi:type="tfp:TFPMessage">
+                <tfp:mmt>
+                  <tfp:optionMMCPartLink>
+                    <mmc:messageID>78746043</mmc:messageID>
+                    <mmc:versionID>6</mmc:versionID>
+                    <mmc:messageExpiryTime>2026-09-28T10:27:42+02:00</mmc:messageExpiryTime>
+                    <mmc:cancelFlag>false</mmc:cancelFlag>
+                    <mmc:partID>1</mmc:partID>
+                    <mmc:updateMode mmc:table="mmc002_UpdateMode" mmc:code="1"/>
+                  </tfp:optionMMCPartLink>
+                </tfp:mmt>
+                <tfp:loc>
+                  <lrc:method>
+                    <lrc:optionTMCLocationReferenceLink>
+                      <tlr:locationID>37307</tlr:locationID>
+                      <tlr:countryCode>11</tlr:countryCode>
+                      <tlr:locationTableNumber>25</tlr:locationTableNumber>
+                      <tlr:direction>true</tlr:direction>
+                      <tlr:bothDirections>false</tlr:bothDirections>
+                      <tlr:extent>1</tlr:extent>
+                    </lrc:optionTMCLocationReferenceLink>
+                  </lrc:method>
+                  <lrc:method>
+                    <lrc:optionOpenLRLocationReferenceLink>
+                      <olr:version>1.1</olr:version>
+                      <olr:locationReference>
+                        <olr:optionLinearLocationReference>
+                          <olr:first>
+                            <olr:coordinate>
+                              <olr:longitude>583571</olr:longitude>
+                              <olr:latitude>2313505</olr:latitude>
+                            </olr:coordinate>
+                            <olr:lineProperties>
+                              <olr:frc olr:table="olr001_FunctionalRoadClass" olr:code="0"/>
+                              <olr:fow olr:table="olr002_FormOfWay" olr:code="1"/>
+                              <olr:bearing><olr:value>42</olr:value></olr:bearing>
+                            </olr:lineProperties>
+                            <olr:pathProperties>
+                              <olr:lfrcnp olr:table="olr001_FunctionalRoadClass" olr:code="0"/>
+                              <olr:dnp><olr:value>287</olr:value></olr:dnp>
+                              <olr:againstDrivingDirection>false</olr:againstDrivingDirection>
+                            </olr:pathProperties>
+                          </olr:first>
+                          <olr:last>
+                            <olr:coordinate>
+                              <olr:longitude>355</olr:longitude>
+                              <olr:latitude>119</olr:latitude>
+                            </olr:coordinate>
+                            <olr:lineProperties>
+                              <olr:frc olr:table="olr001_FunctionalRoadClass" olr:code="0"/>
+                              <olr:fow olr:table="olr002_FormOfWay" olr:code="1"/>
+                              <olr:bearing><olr:value>172</olr:value></olr:bearing>
+                            </olr:lineProperties>
+                          </olr:last>
+                        </olr:optionLinearLocationReference>
+                      </olr:locationReference>
+                    </lrc:optionOpenLRLocationReferenceLink>
+                  </lrc:method>
+                </tfp:loc>
+              </sfw:ApplicationRootMessageML>
+            </sfw:ApplicationRootMessage>
+
+            <!-- ── Location 2 (TMC 25650) ─────────────────────────────────── -->
+
+            <!-- Master: lists the two parts of message 78865458 -->
+            <sfw:ApplicationRootMessage>
+              <sfw:ApplicationRootMessageML xsi:type="tfp:TFPMessage">
+                <tfp:mmt>
+                  <tfp:optionMMCMasterLink>
+                    <mmc:messageID>78865458</mmc:messageID>
+                    <mmc:versionID>6</mmc:versionID>
+                    <mmc:messageExpiryTime>2026-09-28T10:27:42+02:00</mmc:messageExpiryTime>
+                    <mmc:cancelFlag>false</mmc:cancelFlag>
+                    <mmc:multiPartMessageDirectory>
+                      <mmc:partID>1</mmc:partID>
+                      <mmc:partType mmc:table="mmc001_PartType" mmc:code="1"/>
+                    </mmc:multiPartMessageDirectory>
+                    <mmc:multiPartMessageDirectory>
+                      <mmc:partID>2</mmc:partID>
+                      <mmc:partType mmc:table="mmc001_PartType" mmc:code="2"/>
+                    </mmc:multiPartMessageDirectory>
+                  </tfp:optionMMCMasterLink>
+                </tfp:mmt>
+              </sfw:ApplicationRootMessageML>
+            </sfw:ApplicationRootMessage>
+
+            <!-- Part 1: location reference for message 78865458 -->
+            <sfw:ApplicationRootMessage>
+              <sfw:ApplicationRootMessageML xsi:type="tfp:TFPMessage">
+                <tfp:mmt>
+                  <tfp:optionMMCPartLink>
+                    <mmc:messageID>78865458</mmc:messageID>
+                    <mmc:versionID>6</mmc:versionID>
+                    <mmc:messageExpiryTime>2026-09-28T10:27:42+02:00</mmc:messageExpiryTime>
+                    <mmc:cancelFlag>false</mmc:cancelFlag>
+                    <mmc:partID>1</mmc:partID>
+                    <mmc:updateMode mmc:table="mmc002_UpdateMode" mmc:code="1"/>
+                  </tfp:optionMMCPartLink>
+                </tfp:mmt>
+                <tfp:loc>
+                  <lrc:method>
+                    <lrc:optionTMCLocationReferenceLink>
+                      <tlr:locationID>25650</tlr:locationID>
+                      <tlr:countryCode>11</tlr:countryCode>
+                      <tlr:locationTableNumber>25</tlr:locationTableNumber>
+                      <tlr:direction>true</tlr:direction>
+                      <tlr:bothDirections>false</tlr:bothDirections>
+                      <tlr:extent>0</tlr:extent>
+                    </lrc:optionTMCLocationReferenceLink>
+                  </lrc:method>
+                  <lrc:method>
+                    <lrc:optionOpenLRLocationReferenceLink>
+                      <olr:version>1.1</olr:version>
+                      <olr:locationReference>
+                        <olr:optionLinearLocationReference>
+                          <olr:first>
+                            <olr:coordinate>
+                              <olr:longitude>678345</olr:longitude>
+                              <olr:latitude>2333555</olr:latitude>
+                            </olr:coordinate>
+                            <olr:lineProperties>
+                              <olr:frc olr:table="olr001_FunctionalRoadClass" olr:code="2"/>
+                              <olr:fow olr:table="olr002_FormOfWay" olr:code="3"/>
+                              <olr:bearing><olr:value>85</olr:value></olr:bearing>
+                            </olr:lineProperties>
+                            <olr:pathProperties>
+                              <olr:lfrcnp olr:table="olr001_FunctionalRoadClass" olr:code="2"/>
+                              <olr:dnp><olr:value>412</olr:value></olr:dnp>
+                              <olr:againstDrivingDirection>false</olr:againstDrivingDirection>
+                            </olr:pathProperties>
+                          </olr:first>
+                          <olr:last>
+                            <olr:coordinate>
+                              <olr:longitude>50</olr:longitude>
+                              <olr:latitude>17</olr:latitude>
+                            </olr:coordinate>
+                            <olr:lineProperties>
+                              <olr:frc olr:table="olr001_FunctionalRoadClass" olr:code="2"/>
+                              <olr:fow olr:table="olr002_FormOfWay" olr:code="3"/>
+                              <olr:bearing><olr:value>245</olr:value></olr:bearing>
+                            </olr:lineProperties>
+                          </olr:last>
+                        </olr:optionLinearLocationReference>
+                      </olr:locationReference>
+                    </lrc:optionOpenLRLocationReferenceLink>
+                  </lrc:method>
+                </tfp:loc>
+              </sfw:ApplicationRootMessageML>
+            </sfw:ApplicationRootMessage>
+
+          </sfw:ServiceComponentFrameContent>
+        </sfw:ServiceComponent>
+
+      </sfw:ServiceComponentMultiplex>
+    </sfw:ServiceData>
+  </sfw:TransportFrame>
+</sfw:TPEGDocument>

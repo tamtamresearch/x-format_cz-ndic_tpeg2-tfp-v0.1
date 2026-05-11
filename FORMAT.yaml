@@ -1,0 +1,25 @@
+# This YAML file defines attributes of format described in this directory
+name: "TPEG2 TFP - CZ NDIC Flow"
+format_version: '0.1'
+description: |
+    CZ NDIC TPEG2 Traffic Flow and Prediction (TFP) publication
+schema:
+    uri: cz-ndic_tpeg2-tfp-v0.1
+    type: TISA TPEG-ML (XML)
+    location: schema/tpeg-tfp-entrypoint.xsd
+model:
+    standard: ISO 21219-18:2019
+    application: TPEG2 TFP 1.1
+    framework: TPEG2 SFW 1.1
+    location_methods:
+        - TMC (TLR 2.0)
+        - OpenLR (OLR 1.1)
+    delivery:
+        - tpeg-tfp-pls.xml: predefined location set (Part 1 — location reference)
+        - tpeg-tfp.xml: flow status updates (Part 2 — speed / LOS)
+samples:
+    location: samples
+maintainer:
+    name: Jan Vlčinský, Petr Bureš, Roman Hořeňovský
+    company: TamTam Research s.r.o.
+    url: http://www.tamtamresearch.com

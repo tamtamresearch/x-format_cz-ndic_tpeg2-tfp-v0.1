@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This XML schema is generated with tpegUMLconverter V2.3 -->
+<xs:schema xmlns="http://www.tisa.org/TPEG/ETL_1_0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tsf="http://www.tisa.org/TPEG/SFW_1_1" xmlns:tdt="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" targetNamespace="http://www.tisa.org/TPEG/ETL_1_0" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:import namespace="http://www.tisa.org/TPEG/SFW_1_1" schemaLocation="SFW_1_1.xsd"/>
+	<xs:import namespace="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" schemaLocation="TDT_2_1.xsd"/>
+	<xs:element name="ExtendedTMCLocationReference" type="ExtendedTMCLocationReference"><xs:annotation><xs:documentation>This ExtendedTMC Location referencing container includes a number of enhancements with respect to the ALERT-C Location referencing container, in specific for exit and entries, internal/external location parts and version field to support future improvements. An ExtendedTMCLocationReference component (ETL) shall contain only one single type of the various provided types of extended TMClocation references, for example the tmcLocation XOR the tmcExitEntryLocation.</xs:documentation></xs:annotation></xs:element>
+	<xs:complexType name="ExtendedTMCLocationReference">
+		<xs:annotation><xs:documentation>This ExtendedTMC Location referencing container includes a number of enhancements with respect to the ALERT-C Location referencing container, in specific for exit and entries, internal/external location parts and version field to support future improvements. An ExtendedTMCLocationReference component (ETL) shall contain only one single type of the various provided types of extended TMClocation references, for example the tmcLocation XOR the tmcExitEntryLocation.</xs:documentation></xs:annotation><xs:complexContent>
+			<xs:extension base="tsf:ApplicationRootMessageML">
+				<xs:sequence>
+					<xs:element name="specVersionID" type="tdt:MajorMinorVersion"><xs:annotation><xs:documentation>Major and Minor version of the ETL specification used to construct this location reference.</xs:documentation></xs:annotation></xs:element>
+					<xs:element name="tmcLocation" type="TMCLocationReference" minOccurs="0"><xs:annotation><xs:documentation>Enhanced ALERT-C location referencing container containing extra fields to specify the inclusion of TMC internal map segments of the primary and secondary location, as well as version infomation of the TMC location table used.</xs:documentation></xs:annotation></xs:element>
+					<xs:element name="tmcExitEntryLocation" type="TMCExitEntryLocationReference" minOccurs="0"><xs:annotation><xs:documentation>extension to TMC-Location to address entries and/or exits of a given point location</xs:documentation></xs:annotation></xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DirLocation">
+		<xs:annotation><xs:documentation>The DirLocation datastructure specifies a TMC location where the referenced exit road leads to or the referenced entry road originates from.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="dirLocationID" type="tdt:IntUnLi"><xs:annotation><xs:documentation>The number of the TMC location where the exit leads to, or the entry originates from.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="dirLocationDirection" type="tdt:Boolean"><xs:annotation><xs:documentation>The direction of the dirLocation. where the exit leads to, or the entry originates from.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PreciseTMCInformation">
+		<xs:annotation><xs:documentation>The PreciseTMCInformation datastructure specifies additional fields in order to reference a more precise location in between successive TMC locations by means of a metric distance (hazard distance), measured from the primary location in accordance with ISO 14819-1:2013.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="distanceAccuracy" type="tdt:IntUnTi" minOccurs="0"><xs:annotation><xs:documentation>0 = 100m, 1 = 500m, 2 = 1km, 3 = more than 1km 100m if attribute is absent.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="hazardDistance1" type="tdt:IntUnTi" minOccurs="0"><xs:annotation><xs:documentation>Upstream distance from primary location  (against the direction of traffic), also known as D1. Range up to 25km calculated in  steps of 100m</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="hazardDistance2" type="tdt:IntUnLi" minOccurs="0"><xs:annotation><xs:documentation>Same as hazardDistance1 but range up to 6553km</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="problemLength1" type="tdt:IntUnTi" minOccurs="0"><xs:annotation><xs:documentation>Distance the start of the problem to the end of the problem. Which is not necessarily the primary location. Length up to 25km</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="problemLength2" type="tdt:IntUnLi" minOccurs="0"><xs:annotation><xs:documentation>Same as problemLength1 but length up to 6553km</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SequenceNumberExitEntry">
+		<xs:annotation><xs:documentation>The datastructure SequenceNumberExitEntry specifies the sequence number of the exit or entry (e.g. exit 2 out of 5).</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="sequenceNumberExitEntry" type="tdt:IntUnTi"><xs:annotation><xs:documentation>Sequence number to indicate whether it is the 1st 2nd etc exit or entry.
+ The numbering is separate per side of the road end per type of entry or exit.
+ E.g. on one side of the road the following numbering can occur:
+ Exit 1
+ Entry 1
+ Entry 2
+ Exit 2
+ Entry 2</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="totalNumberOfExitEntries" type="tdt:IntUnTi"><xs:annotation><xs:documentation>Total number of exit or entries</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TMCExitEntryLocationReference">
+		<xs:annotation><xs:documentation>The TMCExitEntryLocation reference datastructure specifies the applicable entries and/or exits of a TMC location where the content of the application content is located (e.g. to signal  'first exit closed', where the TMCExitEntryLocationReference references the 'first exit' and the application container signals the 'closed' event).</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="tmcLocation" type="TMCLocationReference"><xs:annotation><xs:documentation>TMC location container indicating the main(junction)location for which the entries and/or exits are referenced in the data structure exitEntryInformation.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="exitEntryInformation" type="ExitEntryInformation" maxOccurs="unbounded"><xs:annotation><xs:documentation>The specific entries or exits of the main TMC location to be referenced.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WGS84Coordinates">
+		<xs:annotation><xs:documentation>The datastructure WGS84coordinates specifies a standard WGS84 coordinate pair with 24 bit resolution.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="wgs84Longitude" type="tdt:IntSi24"><xs:annotation><xs:documentation>Longitude in standard 24 bit accuracy stores co-ordinates in order of magnitude of 10 micro degrees resolution (five decimals).
+ Longitude (unit degrees) is encoded as follows:
+ WGS84longitude = int ( sign(longitude)*0.5 + (longitude * (2^24))/360)</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="wgs84Latitude" type="tdt:IntSi24"><xs:annotation><xs:documentation>WGS84 latitude in standard 24 bit accuracy stores co-ordinates in order of magnitude of 10 micro degrees resolution (five decimals).
+ Latitude (unit degrees) is encoded as follows:
+ WGS84latitude = int ( sign(latitude)*0.5 + (latitude * (2^24))/ 360)</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TMCLocationReference">
+		<xs:annotation><xs:documentation>The datastructure TMC Location Reference extends the ALERT-C Location referencing container to specify whether the TMC internal road segments of primary and secondary location are affected/part of the location or not affected/not part of the location to be referenced.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="locationID" type="tdt:IntUnLi"><xs:annotation><xs:documentation>The actual location number</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="countryCode" type="tdt:IntUnTi"><xs:annotation><xs:documentation>Defines the different countries being responsible for the database creation. The table of country codes is specified in ISO 14819-3</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="locationTableNumber" type="tdt:IntUnTi"><xs:annotation><xs:documentation>The number of the location table. The value is specified per country and may differ over time.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="direction" type="tdt:Boolean"><xs:annotation><xs:documentation>The direction bit defines the direction from primary to secondary location (against driving direction). If the direction flag is true/1 it means positive direction i.e. following to the successor in the location list.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="bothDirections" type="tdt:Boolean"><xs:annotation><xs:documentation>If set to true the location shall be treated as being applicable for both directions. 
+ NOTE: EN ISO 14819-1(,-2):2013 defines this information in two pieces. 1. implicitly per event code and 2. as inversion bit In the control code</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="extent" type="tdt:IntUnTi" minOccurs="0"><xs:annotation><xs:documentation>Number of hops in the linked list of location codes. The direction is defined by the direction attribute. Absent value is defined 0 and means inside the current location.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="extendedCountryCode" type="tdt:IntUnTi" minOccurs="0"><xs:annotation><xs:documentation>In non-European countries, the full range of location tables per country code can be used provided that the Extended Country Code associated with the ALERT-C location table is defined and provided (Extended Country Codes are defined in IEC 62106:2000). Even if this field is optional this field shall be sent mandatorily.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="locationTableVersion" type="tdt:IntUnLoMB" minOccurs="0"><xs:annotation><xs:documentation>If one byte 4 bits for major and 3 bits for minor if two bytes 7 bits for major and 7 bits for minor three bytes not possible because ALERT-C restricts to 0-99 for both. Letters in some old versions are interpreted as minor increments to the given number.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="preciseTMCInfo" type="PreciseTMCInformation" minOccurs="0"><xs:annotation><xs:documentation>Precise ALERT-C Information follows</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="useInternalPrimaryLocation" type="tdt:Boolean"><xs:annotation><xs:documentation>true/1 if the internal TMC (through) road section of the primary location is also affected. False/0 otherwise.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="useInternalSecondaryLocation" type="tdt:Boolean"><xs:annotation><xs:documentation>true/1 if the internal TMC through road section of the secondary location is also affected. False/0 otherwise.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExitEntryInformation">
+		<xs:annotation><xs:documentation>The datastructure ExitEntryInformation specifies detailed information as to which exits and or entries are affected by the application contents.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="isExitOrEntry" type="tdt:Boolean"><xs:annotation><xs:documentation>true or 1 for exit , false or 0 for entry</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="oppositeDir" type="tdt:Boolean"><xs:annotation><xs:documentation>If true or 1, the entry or exit is on the opposite site of the road as the direction of the main TMC location reference indicates. (This is to be used if the main tmc location indicates 'both directions').</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="dirLocation" type="DirLocation" minOccurs="0"><xs:annotation><xs:documentation>The TMC location where the exit leads to,or entry originates from</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="exitEntryPoint" type="WGS84Coordinates" minOccurs="0"><xs:annotation><xs:documentation>WGS84Coordinates of the specified exit entry
+ May be used advantageously if there is more than one Exit or Entry for the specified side and not all of them are closed.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="sequenceNumberExitEntry" type="SequenceNumberExitEntry" minOccurs="0"><xs:annotation><xs:documentation>Sequence number of exit or entry follows (e.g. exit 4 of 5)</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

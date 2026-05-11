@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This XML schema is generated with tpegUMLconverter 3.1, at 2019-04-14 16:16, on basis of release 3.0 -->
+<xs:schema xmlns="http://www.tisa.org/TPEG/LRC_3_0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tsf="http://www.tisa.org/TPEG/SFW_1_1" xmlns:tdt="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" xmlns:dlr="http://www.tisa.org/TPEG/DLR_4_0" xmlns:tlr="http://www.tisa.org/TPEG/TLR_2_0" xmlns:etl="http://www.tisa.org/TPEG/ETL_1_0" xmlns:glr="http://www.tisa.org/TPEG/GLR_2_1" xmlns:ulr="http://www.tisa.org/TPEG/ULR_0_8" xmlns:olr="http://www.tisa.org/TPEG/OLR_1_1" targetNamespace="http://www.tisa.org/TPEG/LRC_3_0" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:import namespace="http://www.tisa.org/TPEG/SFW_1_1" schemaLocation="SFW_1_1.xsd"/>
+	<xs:import namespace="http://www.tisa.org/TPEG/TPEGDataTypes_2_1" schemaLocation="TDT_2_1.xsd"/>
+	<xs:import namespace="http://www.tisa.org/TPEG/DLR_4_0" schemaLocation="DLR_4_0.xsd"/>
+	<xs:import namespace="http://www.tisa.org/TPEG/TLR_2_0" schemaLocation="TLR_2_0.xsd"/>
+	<xs:import namespace="http://www.tisa.org/TPEG/ETL_1_0" schemaLocation="ETL_1_0.xsd"/>
+	<xs:import namespace="http://www.tisa.org/TPEG/GLR_2_1" schemaLocation="GLR_2_1.xsd"/>
+	<xs:import namespace="http://www.tisa.org/TPEG/ULR_0_8" schemaLocation="ULR_0_8.xsd"/>
+	<xs:import namespace="http://www.tisa.org/TPEG/OLR_1_1" schemaLocation="OLR_1_1.xsd"/>
+	
+	<xs:element name="LocationReferencingContainer" type="LocationReferencingContainer"><xs:annotation><xs:documentation>The generic LocationReferencingContainer can contain a pre-coded or a dynamic location reference.
+ One or more location referencing method, e.g. TPEG Location, DLR1 Location, TMC Location, VICS Link Location, Korean Node Link Location, ETL Location or GLR Location, can be used to describe one physical location. Any particular method shall be used only once in any LocationReferencingContainer.</xs:documentation></xs:annotation></xs:element>
+
+	<xs:complexType name="LocationReferencingContainer">
+			<xs:annotation><xs:documentation>The generic LocationReferencingContainer can contain a pre-coded or a dynamic location reference.
+ One or more location referencing method, e.g. TPEG Location, DLR1 Location, TMC Location, VICS Link Location, Korean Node Link Location, ETL Location or GLR Location, can be used to describe one physical location. Any particular method shall be used only once in any LocationReferencingContainer.</xs:documentation></xs:annotation><xs:sequence>
+				<xs:choice maxOccurs="unbounded">
+					<xs:element name="method" type="Method" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:choice>
+			</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Method">
+		<xs:annotation><xs:documentation>This component is a placeholder for the actual location reference containers.
+ Any particular method shall be used once in any LocationReferencingContainer.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:choice minOccurs="1" maxOccurs="1">
+				<xs:element name="optionDLR1LocationReferenceLink" type="dlr:DLR1LocationReference" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionTMCLocationReferenceLink" type="tlr:TMCLocationReference" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionKoreanNodeLinkLocationReferenceLink" type="xs:base64Binary" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionVICSLinkReferenceLink" type="xs:base64Binary" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionExtendedTMCLocationReferenceLink" type="etl:ExtendedTMCLocationReference" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionGeographicLocationReferenceLink" type="glr:GeographicLocationReference" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionUniversalLocationReferenceLink" type="ulr:UniversalLocationReference" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionOpenLRLocationReferenceLink" type="olr:OpenLRLocationReference" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="optionNDSLocationReference" type="NDSLocationReference" minOccurs="1" maxOccurs="1"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NDSLocationReference">
+		<xs:annotation><xs:documentation>This component defines the NDS Location Reference for referencing locations based on NDS maps (see www.nds-association.org). The component structure of this NDS Location Reference follows the TPEG component structure, yet it contains as binary data an Link Location Reference in NDS format.</xs:documentation></xs:annotation><xs:sequence>
+			<xs:element name="onsiLLR" type="tdt:ByteFieldAttribute"><xs:annotation><xs:documentation>Link Location Reference specified by the NDS association Open NDS Service Interface specification (see specification NDS2.X_ONSI-LLR). This Link Location Reference is carried in TPEG as binary data.</xs:documentation></xs:annotation></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

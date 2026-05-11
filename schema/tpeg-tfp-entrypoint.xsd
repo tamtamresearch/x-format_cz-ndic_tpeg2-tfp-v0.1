@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Validation entrypoint for TPEG-TFP (Traffic Flow and Prediction) documents.
+
+  This file has no targetNamespace of its own; it only pulls together all the
+  sub-schemas required to validate a TPEGDocument that carries TFP and SNI
+  service components.  Pass this file to xmlstarlet or xmllint:
+
+    xmlstarlet val -s tpeg-tfp-entrypoint.xsd document.xml
+    xmllint -noout -schema tpeg-tfp-entrypoint.xsd document.xml
+
+  All schemaLocation values are relative to this file's directory.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Framework -->
+  <!-- SFW 1.1 defines the TPEGDocument root element and the ServiceComponent
+       multiplex structure used by every TPEG application. -->
+  <xs:import namespace="http://www.tisa.org/TPEG/SFW_1_1"
+             schemaLocation="SFW_1_1.xsd"/>
+
+  <!-- Shared TPEG primitive data types (enumerations, simple types). -->
+  <xs:import namespace="http://www.tisa.org/TPEG/TPEGDataTypes_2_1"
+             schemaLocation="TDT_2_1.xsd"/>
+
+  <!-- Applications -->
+  <!-- TFP 1.1 - Traffic Flow and Prediction (the primary application). -->
+  <xs:import namespace="http://www.tisa.org/TPEG/TFP_1_1"
+             schemaLocation="TFP_1_1.xsd"/>
+
+  <!-- SNI 3.3 - Service and Network Information (SCID 0 component). -->
+  <xs:import namespace="http://www.tisa.org/TPEG/SNI_3_3"
+             schemaLocation="SNI_3_3.xsd"/>
+
+  <!-- Message management -->
+  <!-- MMC 1.1 - Message Management Container (messageID, version, expiry). -->
+  <xs:import namespace="http://www.tisa.org/TPEG/MMC_1_1"
+             schemaLocation="MMC_1_1.xsd"/>
+
+  <!-- Location referencing -->
+  <!-- LRC 3.0 - Location Referencing Container (wrapper for all methods). -->
+  <xs:import namespace="http://www.tisa.org/TPEG/LRC_3_0"
+             schemaLocation="LRC_3_0.xsd"/>
+
+  <!-- The methods below are already imported transitively by LRC_3_0.xsd,
+       but libxml2 registers namespace→schema mappings from the first xs:import
+       it sees for a given namespace.  Listing them here explicitly ensures the
+       validator resolves every namespace it encounters in the document,
+       regardless of the order in which it processes the schema graph. -->
+
+  <!-- DLR 4.0 - Direction/Linear (Alert-C / TMC) location referencing. -->
+  <xs:import namespace="http://www.tisa.org/TPEG/DLR_4_0"
+             schemaLocation="DLR_4_0.xsd"/>
+
+  <!-- TLR 2.0 - TMC Location Reference. -->
+  <xs:import namespace="http://www.tisa.org/TPEG/TLR_2_0"
+             schemaLocation="TLR_2_0.xsd"/>
+
+  <!-- ETL 1.0 - Extended TMC Location Reference. -->
+  <xs:import namespace="http://www.tisa.org/TPEG/ETL_1_0"
+             schemaLocation="ETL_1_0.xsd"/>
+
+  <!-- GLR 2.1 - Geographic (WGS-84 point/line) Location Reference. -->
+  <xs:import namespace="http://www.tisa.org/TPEG/GLR_2_1"
+             schemaLocation="GLR_2_1.xsd"/>
+
+  <!-- ULR 0.8 - Universal Location Reference. -->
+  <xs:import namespace="http://www.tisa.org/TPEG/ULR_0_8"
+             schemaLocation="ULR_0_8.xsd"/>
+
+  <!-- OLR 1.1 - OpenLR Location Reference. -->
+  <xs:import namespace="http://www.tisa.org/TPEG/OLR_1_1"
+             schemaLocation="OLR_1_1.xsd"/>
+
+</xs:schema>
